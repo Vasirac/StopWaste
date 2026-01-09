@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NoShort Settings</title>
+  <style>
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      padding: 0; 
+      width: 340px; 
+      background-color: #f8f9fa;
+      margin: 0;
+      color: #333;
+    }
+    header {
+      background: #222;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    .container {
+      padding: 12px;
+    }
+    .platform-section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .section-title {
+      font-size: 0.85em;
+      color: #888;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      font-weight: 700;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sub-title {
+        font-size: 0.75em;
+        color: #aaa;
+        margin: 10px 0 5px 0;
+        font-weight: 600;
+    }
+    .ig-title { color: #E1306C; }
+    .yt-title { color: #FF0000; }
+
+    label { 
+      display: flex; 
+      align-items: center; 
+      cursor: pointer; 
+      justify-content: space-between; 
+      margin-bottom: 8px; 
+      font-size: 0.9em;
+    }
+    label:last-child { margin-bottom: 0; }
+
+    /* Input Style */
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9em;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus {
+      border-color: #E1306C;
+      outline: none;
+    }
+    .input-desc {
+        font-size: 0.75em;
+        color: #888;
+        margin-bottom: 5px;
+    }
+    
+    /* Toggle Switch Style */
+    input[type="checkbox"] {
+      appearance: none;
+      width: 32px;
+      height: 18px;
+      background: #ddd;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      transition: background 0.3s;
+    }
+    input[type="checkbox"]::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    input[type="checkbox"]:checked {
+      background: #4CAF50;
+    }
+    input[type="checkbox"]:checked::after {
+      transform: translateX(14px);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.75em;
+      color: #aaa;
+      padding: 5px 0 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    NoShort Multi
+    <div style="margin-top: 5px;">
+      <select id="userLocale" style="font-size: 0.8em; padding: 2px; border-radius: 4px;">
+        <option value="auto">Auto (System)</option>
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="ja">日本語</option>
+        <option value="zh_CN">中文</option>
+        <option value="hi">हिन्दी</option>
+      </select>
+    </div>
+  </header>
+  
+  <div class="container">
+    <!-- Instagram Settings -->
+    <div class="platform-section">
+      <div class="section-title ig-title">📸 Instagram</div>
+      
+      <div class="sub-title">Block & Redirect</div>
+      <label>
+        <span>Redirect Reels/Explore</span>
+        <input type="checkbox" id="ig_hideReelsPage">
+      </label>
+      
+      <div class="input-desc">Redirect Target (e.g. / or /direct/inbox/)</div>
+      <input type="text" id="ig_redirectUrl" placeholder="/direct/inbox/">
+
+      <label>
+        <span>Remove Feed Videos</span>
+        <input type="checkbox" id="ig_hideVideos">
+      </label>
+      <label>
+        <span>Remove Feed Photos (NEW)</span>
+        <input type="checkbox" id="ig_hidePhotos">
+      </label>
+      <label>
+        <span>Hide Sidebar & Recommendations</span>
+        <input type="checkbox" id="ig_hideSidebarAndRec">
+      </label>
+
+      <div class="sub-title">Hide UI</div>
+      <label>
+        <span>Hide Main Feed (Whole)</span>
+        <input type="checkbox" id="ig_hideFeed">
+      </label>
+      <label>
+        <span>Hide Home Tab</span>
+        <input type="checkbox" id="ig_hideHomeTab">
+      </label>
+      <label>
+        <span>Hide Explore Tab</span>
+        <input type="checkbox" id="ig_hideExploreTab">
+      </label>
+      <label>
+        <span>Hide Reels Tab</span>
+        <input type="checkbox" id="ig_hideReelsTab">
+      </label>
+      <label>
+        <span>Hide Stories Bar</span>
+        <input type="checkbox" id="ig_hideStories">
+      </label>
+
+      <div class="sub-title">Others</div>
+      <label>
+        <span>Hide Numbers</span>
+        <input type="checkbox" id="ig_hideNumbers">
+      </label>
+      <label>
+        <span>Grayscale Mode</span>
+        <input type="checkbox" id="ig_grayscaleMode">
+      </label>
+    </div>
+
+    <!-- YouTube Settings -->
+    <div class="platform-section">
+      <div class="section-title yt-title">📺 YouTube</div>
+      <label>
+        <span>Block Shorts</span>
+        <input type="checkbox" id="yt_hideShorts">
+      </label>
+      <label>
+        <span>Minimal Home (Search Only)</span>
+        <input type="checkbox" id="yt_hideHome">
+      </label>
+      <label>
+        <span>Hide Sidebar & Header</span>
+        <input type="checkbox" id="yt_hideSidebar">
+      </label>
+      <label>
+        <span>Hide Comments</span>
+        <input type="checkbox" id="yt_hideComments">
+      </label>
+      <label>
+        <span>Hide Related Videos</span>
+        <input type="checkbox" id="yt_hideRelated">
+      </label>
+    </div>
+
+    <div class="footer" id="status">Settings saved automatically</div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

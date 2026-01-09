@@ -1,0 +1,31 @@
+{
+  "extName": { "message": "NoShort 多功能版" },
+  "extDesc": { "message": "屏蔽短视频内容和干扰要素。" },
+  
+  "secIG": { "message": "📸 Instagram" },
+  "secBlockRedirect": { "message": "拦截与重定向" },
+  "optRedirectReels": { "message": "重定向 Reels/探索" },
+  "descRedirectUrl": { "message": "重定向目标 (例如 / 或 /direct/inbox/)" },
+  "optRemoveVideos": { "message": "移除动态视频" },
+  "optRemovePhotos": { "message": "移除动态照片" },
+  
+  "secHideUI": { "message": "隐藏 UI" },
+  "optHideFeed": { "message": "隐藏主页动态 (全部)" },
+  "optHideHomeTab": { "message": "隐藏主页标签" },
+  "optHideExploreTab": { "message": "隐藏探索标签" },
+  "optHideReelsTab": { "message": "隐藏 Reels 标签" },
+  "optHideStories": { "message": "隐藏故事栏" },
+  
+  "secOthers": { "message": "其他" },
+  "optHideNumbers": { "message": "隐藏数字" },
+  "optGrayscale": { "message": "黑白模式" },
+  
+  "secYT": { "message": "📺 YouTube" },
+  "optBlockShorts": { "message": "拦截 Shorts" },
+  "optMinimalHome": { "message": "极简首页 (仅搜索)" },
+  "optHideSidebar": { "message": "隐藏侧边栏和顶部栏" },
+  "optHideComments": { "message": "隐藏评论" },
+  "optHideRelated": { "message": "隐藏相关视频" },
+  
+  "msgSaved": { "message": "设置已自动保存" }
+}

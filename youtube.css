@@ -1,0 +1,55 @@
+/* --- YouTube Options CSS --- */
+
+/* 1. Shorts Block */
+html.ns-yt-shorts ytd-reel-shelf-renderer,
+html.ns-yt-shorts ytd-rich-shelf-renderer[is-shorts],
+html.ns-yt-shorts a[href^="/shorts"],
+html.ns-yt-shorts [title="Shorts"],
+html.ns-yt-shorts ytd-mini-guide-entry-renderer[aria-label="Shorts"] {
+    display: none !important;
+}
+
+/* 2. Minimal Home (Hide Feed) */
+html.ns-yt-home ytd-browse[page-subtype="home"] {
+    display: none !important;
+}
+
+/* 3. Hide Sidebar & Header Elements */
+html.ns-yt-sidebar #guide,
+html.ns-yt-sidebar ytd-mini-guide-renderer,
+html.ns-yt-sidebar #guide-button,
+html.ns-yt-sidebar #guide-spacer,
+html.ns-yt-sidebar #start.ytd-masthead,
+html.ns-yt-sidebar #end.ytd-masthead {
+    display: none !important;
+}
+
+html.ns-yt-sidebar ytd-app[guide-persistent-and-visible] #page-manager.ytd-app {
+    margin-left: 0 !important;
+}
+
+html.ns-yt-sidebar #center.ytd-masthead {
+    margin: 0 auto !important;
+    max-width: 720px !important;
+    width: 100% !important;
+    display: flex !important;
+}
+
+/* 4. Hide Comments */
+html.ns-yt-comments #comments,
+html.ns-yt-comments ytd-comments,
+html.ns-yt-comments #chat {
+    display: none !important;
+}
+
+/* 5. Hide Related Videos (Sidebar in Watch) */
+html.ns-yt-related #secondary,
+html.ns-yt-related #related {
+    display: none !important;
+}
+
+/* Always Hide Autoplay Toggle & Endscreen (Basic Policy) */
+.ytp-autonav-toggle-button,
+.ytp-endscreen-content {
+    display: none !important;
+}

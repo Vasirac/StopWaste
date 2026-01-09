@@ -1,0 +1,31 @@
+{
+  "extName": { "message": "NoShort マルチ" },
+  "extDesc": { "message": "ショートフォームコンテンツと誘惑をブロックします。" },
+  
+  "secIG": { "message": "📸 Instagram" },
+  "secBlockRedirect": { "message": "ブロックとリダイレクト" },
+  "optRedirectReels": { "message": "リール/検索をリダイレクト" },
+  "descRedirectUrl": { "message": "リダイレクト先 (例: / または /direct/inbox/)" },
+  "optRemoveVideos": { "message": "フィード動画を削除" },
+  "optRemovePhotos": { "message": "フィード写真を削除" },
+  
+  "secHideUI": { "message": "UIを隠す" },
+  "optHideFeed": { "message": "メインフィードを隠す (全体)" },
+  "optHideHomeTab": { "message": "ホームタブを隠す" },
+  "optHideExploreTab": { "message": "検索タブを隠す" },
+  "optHideReelsTab": { "message": "リールタブを隠す" },
+  "optHideStories": { "message": "ストーリーバーを隠す" },
+  
+  "secOthers": { "message": "その他" },
+  "optHideNumbers": { "message": "数字を隠す" },
+  "optGrayscale": { "message": "グレースケールモード" },
+  
+  "secYT": { "message": "📺 YouTube" },
+  "optBlockShorts": { "message": "Shortsをブロック" },
+  "optMinimalHome": { "message": "ミニマルホーム (検索のみ)" },
+  "optHideSidebar": { "message": "サイドバーとヘッダーを隠す" },
+  "optHideComments": { "message": "コメントを隠す" },
+  "optHideRelated": { "message": "関連動画を隠す" },
+  
+  "msgSaved": { "message": "設定が自動的に保存されました" }
+}
