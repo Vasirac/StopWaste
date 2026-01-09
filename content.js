@@ -22,27 +22,37 @@ const quotes = [
     "Stop scrolling, start living."
 ];
 
-// 디버그 변수
-let debugCounter = 0;
-
 function loadConfig() {
+    console.log("NoShort: loadConfig called");
     try {
         if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
             chrome.storage.sync.get(config, (items) => {
+                console.log("NoShort: Storage Loaded", items);
                 config = { ...config, ...items };
                 applyConfig();
+                startLogic(); 
             });
         } else {
+            console.log("NoShort: No chrome.storage, using default");
             applyConfig();
+            startLogic();
         }
     } catch (e) {
+        console.error("NoShort: Error in loadConfig", e);
         applyConfig();
+        startLogic();
     }
 }
 
-// Initial load fallback
-setTimeout(() => { applyConfig(); }, 100);
-setTimeout(() => { applyConfig(); }, 1000);
+function startLogic() {
+    const hostname = window.location.hostname;
+    console.log("NoShort: startLogic for", hostname);
+    if (hostname.includes("instagram.com")) {
+        runInstagramLogic();
+    } else if (hostname.includes("youtube.com")) {
+        runYouTubeLogic();
+    }
+}
 
 if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged) {
     chrome.storage.onChanged.addListener((changes, namespace) => {
@@ -54,6 +64,7 @@ if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged)
 }
 
 function applyConfig() {
+    console.log("NoShort: applyConfig called");
     const html = document.documentElement;
     html.classList.toggle('ns-ig-photos', config.ig_hidePhotos);
     html.classList.toggle('ns-ig-sidebar-rec', config.ig_hideSidebarAndRec);
@@ -75,18 +86,6 @@ function applyConfig() {
     processInstagramContent();
 }
 
-// CSS Injection is now handled by manifest.json, but we keep this function if needed dynamically
-// function injectCSS(fileName) { ... } 
-
-const hostname = window.location.hostname;
-if (hostname.includes("instagram.com")) {
-    runInstagramLogic();
-} else if (hostname.includes("youtube.com")) {
-    runYouTubeLogic();
-}
-loadConfig();
-
-
 function neutralizeVideo(video) {
     if (!video.paused && config.ig_hideVideos) {
         video.pause();
@@ -104,20 +103,15 @@ function neutralizeVideo(video) {
 }
 
 function injectQuote(article) {
-    // 이미 있는지 확인
     if (article.hasAttribute('data-quote')) return;
-    
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
     article.setAttribute('data-quote', randomQuote);
 }
 
 function processInstagramContent() {
-    // 1. Video 처리
     if (config.ig_hideVideos) {
         document.querySelectorAll('video').forEach(neutralizeVideo);
     }
-
-    // 2. 명언 주입
     const articles = document.querySelectorAll('article');
     if (articles.length > 0) {
         articles.forEach(injectQuote);
@@ -125,13 +119,26 @@ function processInstagramContent() {
 }
 
 function runInstagramLogic() {
+    console.log("NoShort: runInstagramLogic started");
     setInterval(() => {
         const path = window.location.pathname;
+        const target = config.ig_redirectUrl || "/direct/inbox/";
+
+        // 1. Reels, Explore, Stories 리다이렉트
         if (config.ig_hideReelsPage) {
-            const target = config.ig_redirectUrl || "/direct/inbox/";
             const blockedPaths = ["/reels", "/reel", "/explore", "/stories"];
             if (blockedPaths.some(p => path.startsWith(p)) && path !== target) {
-                window.location.assign(target);
+                console.log("NoShort: Redirecting (Blocked Path)", path);
+                window.location.replace(target);
+                return;
+            }
+        }
+
+        // 2. 홈 화면 리다이렉트 (홈 탭 숨기기 활성화 시)
+        if (config.ig_hideHomeTab && (path === "/" || path === "")) {
+            if (path !== target) {
+                console.log("NoShort: Redirecting (Home Tab Hidden)", path, "->", target);
+                window.location.replace(target);
             }
         }
     }, 500);
@@ -146,3 +153,5 @@ function runYouTubeLogic() {
         if (btn && btn.getAttribute("aria-checked") === "true") btn.click();
     }, 2000);
 }
+
+loadConfig();
