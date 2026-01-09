@@ -1,8 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "NoShort Multi: IG & YT Blocker",
+  "name": "StopWaste",
   "version": "1.0",
   "description": "Block short-form content and distractions on Instagram and YouTube",
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
   "permissions": [
     "storage"
   ],
@@ -23,7 +28,12 @@
     }
   ],
   "action": {
-    "default_popup": "options/options.html"
+    "default_popup": "options/options.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
   },
   "web_accessible_resources": [
     {

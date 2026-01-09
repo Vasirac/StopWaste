@@ -1,8 +1,8 @@
-# 🚫 NoShort Multi
+# 🚫 StopWaste
 
-**NoShort Multi** is a browser extension designed to help you regain focus by removing addictive elements from Instagram and YouTube. Stop doom-scrolling and start living!
+**StopWaste** is a browser extension designed to help you regain focus by removing addictive elements from Instagram and YouTube. Stop doom-scrolling and start living!
 
-**NoShort Multi**는 인스타그램과 유튜브의 중독적인 요소들을 제거하여 생산성을 높여주는 브라우저 확장 프로그램입니다. 무의식적인 스크롤을 멈추고 더 중요한 일에 집중하세요!
+**StopWaste**는 인스타그램과 유튜브의 중독적인 요소들을 제거하여 생산성을 높여주는 브라우저 확장 프로그램입니다. 무의식적인 스크롤을 멈추고 더 중요한 일에 집중하세요!
 
 ---
 
@@ -41,7 +41,7 @@
 - **피드 정화:** 피드에 뜨는 동영상과 사진을 숨겨 무한 스크롤을 방지합니다.
 - **UI 단순화:** 사이드바, 추천 친구, 스토리 바, 하단 탭(홈/탐색/릴스) 등을 깔끔하게 숨길 수 있습니다.
 - **흑백 모드:** 사이트 전체를 흑백으로 만들어 시각적 자극을 줄입니다.
-- **동기부여 명언:** 피드 대신 무작위 명언을 띄워 스마트폰을 내려놓게 유도합니다.
+- **동기부여 명언:** 피드 대신 무작위 명언을 띄워 시간낭비를 그만두게 유도합니다.
 
 ### 📺 유튜브 집중 모드
 - **쇼츠 차단:** 중독성이 강한 쇼츠(Shorts) 영상을 아예 보이지 않게 차단합니다.
