@@ -1,0 +1,31 @@
+{
+  "extName": { "message": "NoShort 멀티" },
+  "extDesc": { "message": "숏폼 콘텐츠와 주의 산만 요소를 차단합니다." },
+  
+  "secIG": { "message": "📸 인스타그램" },
+  "secBlockRedirect": { "message": "차단 및 리다이렉트" },
+  "optRedirectReels": { "message": "릴스/탐색 리다이렉트" },
+  "descRedirectUrl": { "message": "리다이렉트 대상 (예: / 또는 /direct/inbox/)" },
+  "optRemoveVideos": { "message": "피드 동영상 제거" },
+  "optRemovePhotos": { "message": "피드 사진 제거" },
+  
+  "secHideUI": { "message": "UI 숨기기" },
+  "optHideFeed": { "message": "메인 피드 숨기기 (전체)" },
+  "optHideHomeTab": { "message": "홈 탭 숨기기" },
+  "optHideExploreTab": { "message": "탐색 탭 숨기기" },
+  "optHideReelsTab": { "message": "릴스 탭 숨기기" },
+  "optHideStories": { "message": "스토리 바 숨기기" },
+  
+  "secOthers": { "message": "기타" },
+  "optHideNumbers": { "message": "숫자 숨기기" },
+  "optGrayscale": { "message": "흑백 모드" },
+  
+  "secYT": { "message": "📺 유튜브" },
+  "optBlockShorts": { "message": "쇼츠 차단" },
+  "optMinimalHome": { "message": "미니멀 홈 (검색만 가능)" },
+  "optHideSidebar": { "message": "사이드바 및 헤더 숨기기" },
+  "optHideComments": { "message": "댓글 숨기기" },
+  "optHideRelated": { "message": "관련 동영상 숨기기" },
+  
+  "msgSaved": { "message": "설정이 자동으로 저장되었습니다" }
+}

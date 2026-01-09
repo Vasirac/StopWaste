@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "NoShort Multi: IG & YT Blocker",
+  "version": "1.0",
+  "description": "Block short-form content and distractions on Instagram and YouTube",
+  "permissions": [
+    "storage"
+  ],
+  "default_locale": "en",
+  "host_permissions": [
+    "https://www.instagram.com/*",
+    "https://www.youtube.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.instagram.com/*",
+        "https://www.youtube.com/*"
+      ],
+      "css": ["instagram.css", "youtube.css"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "options/options.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["instagram.css", "youtube.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

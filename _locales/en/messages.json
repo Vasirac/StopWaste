@@ -1,0 +1,31 @@
+{
+  "extName": { "message": "NoShort Multi" },
+  "extDesc": { "message": "Block short-form content and distractions." },
+  
+  "secIG": { "message": "📸 Instagram" },
+  "secBlockRedirect": { "message": "Block & Redirect" },
+  "optRedirectReels": { "message": "Redirect Reels/Explore" },
+  "descRedirectUrl": { "message": "Redirect Target (e.g. / or /direct/inbox/)" },
+  "optRemoveVideos": { "message": "Remove Feed Videos" },
+  "optRemovePhotos": { "message": "Remove Feed Photos" },
+  
+  "secHideUI": { "message": "Hide UI" },
+  "optHideFeed": { "message": "Hide Main Feed (Whole)" },
+  "optHideHomeTab": { "message": "Hide Home Tab" },
+  "optHideExploreTab": { "message": "Hide Explore Tab" },
+  "optHideReelsTab": { "message": "Hide Reels Tab" },
+  "optHideStories": { "message": "Hide Stories Bar" },
+  
+  "secOthers": { "message": "Others" },
+  "optHideNumbers": { "message": "Hide Numbers" },
+  "optGrayscale": { "message": "Grayscale Mode" },
+  
+  "secYT": { "message": "📺 YouTube" },
+  "optBlockShorts": { "message": "Block Shorts" },
+  "optMinimalHome": { "message": "Minimal Home (Search Only)" },
+  "optHideSidebar": { "message": "Hide Sidebar & Header" },
+  "optHideComments": { "message": "Hide Comments" },
+  "optHideRelated": { "message": "Hide Related Videos" },
+  
+  "msgSaved": { "message": "Settings saved automatically" }
+}
