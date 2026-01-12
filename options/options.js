@@ -1,3 +1,4 @@
+/* global chrome */
 const defaultOptions = {
     // Instagram
     ig_hideReelsPage: true,

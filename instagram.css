@@ -99,10 +99,23 @@ html.ns-grayscale {
     filter: grayscale(100%) !important;
 }
 
-/* 8. Hide Sidebar & Recommendations */
+/* 8. Hide Left Sidebar & Adjust Layout */
+html.ns-ig-sidebar-rec div[role="navigation"],
 html.ns-ig-sidebar-rec aside[role="presentation"],
 html.ns-ig-sidebar-rec .x1q0g3np.x1yztbdb.x1y1aw1k,
-html.ns-ig-sidebar-rec nav[role="navigation"],
 html.ns-ig-sidebar-rec header[role="banner"] {
     display: none !important;
+}
+
+/* 사이드바 제거 시 메인 영역 여백 제거 (가로 중앙 정렬 유도) */
+html.ns-ig-sidebar-rec .x78zum5.xdt5ytf.x10ci6zj,
+html.ns-ig-sidebar-rec .x1qjc9v5.x972fbf.xcf7afm.x1ad0727 {
+    margin-left: 0 !important;
+}
+
+html.ns-ig-sidebar-rec main[role="main"] {
+    margin-left: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
 }

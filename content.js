@@ -1,3 +1,4 @@
+/* global chrome */
 console.log("%c NoShort Multi: Script Starting... ", "background: #333; color: #fff; padding: 2px 5px;");
 
 let config = {
@@ -66,92 +67,123 @@ if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged)
 function applyConfig() {
     console.log("NoShort: applyConfig called");
     const html = document.documentElement;
-    html.classList.toggle('ns-ig-photos', config.ig_hidePhotos);
-    html.classList.toggle('ns-ig-sidebar-rec', config.ig_hideSidebarAndRec);
-    html.classList.toggle('ns-ig-feed', config.ig_hideFeed); 
-    html.classList.toggle('ns-ig-videos', config.ig_hideVideos);
-    html.classList.toggle('ns-ig-home', config.ig_hideHomeTab);
-    html.classList.toggle('ns-ig-explore', config.ig_hideExploreTab);
-    html.classList.toggle('ns-ig-reels', config.ig_hideReelsTab);
-    html.classList.toggle('ns-ig-stories', config.ig_hideStories);
-    html.classList.toggle('ns-ig-numbers', config.ig_hideNumbers);
-    html.classList.toggle('ns-grayscale', config.ig_grayscaleMode);
-    
-    html.classList.toggle('ns-yt-shorts', config.yt_hideShorts);
-    html.classList.toggle('ns-yt-home', config.yt_hideHome);
-    html.classList.toggle('ns-yt-sidebar', config.yt_hideSidebar);
-    html.classList.toggle('ns-yt-comments', config.yt_hideComments);
-    html.classList.toggle('ns-yt-related', config.yt_hideRelated);
+    const configClasses = {
+        'ns-ig-photos': config.ig_hidePhotos,
+        'ns-ig-sidebar-rec': config.ig_hideSidebarAndRec,
+        'ns-ig-feed': config.ig_hideFeed,
+        'ns-ig-videos': config.ig_hideVideos,
+        'ns-ig-home': config.ig_hideHomeTab,
+        'ns-ig-explore': config.ig_hideExploreTab,
+        'ns-ig-reels': config.ig_hideReelsTab,
+        'ns-ig-stories': config.ig_hideStories,
+        'ns-ig-numbers': config.ig_hideNumbers,
+        'ns-grayscale': config.ig_grayscaleMode,
+        'ns-yt-shorts': config.yt_hideShorts,
+        'ns-yt-home': config.yt_hideHome,
+        'ns-yt-sidebar': config.yt_hideSidebar,
+        'ns-yt-comments': config.yt_hideComments,
+        'ns-yt-related': config.yt_hideRelated
+    };
 
-    processInstagramContent();
+    for (const [className, enabled] of Object.entries(configClasses)) {
+        html.classList.toggle(className, enabled);
+    }
+
+    processExistingContent();
 }
 
 function neutralizeVideo(video) {
-    if (!video.paused && config.ig_hideVideos) {
-        video.pause();
-        video.muted = true;
+    if (config.ig_hideVideos) {
+        if (!video.paused) {
+            video.pause();
+            video.muted = true;
+        }
+        if (!video.dataset.eventsAttached) {
+            const p = () => { if (config.ig_hideVideos) video.pause(); };
+            video.addEventListener('play', p);
+            video.addEventListener('timeupdate', p);
+            video.dataset.eventsAttached = "true";
+        }
     }
-    if (video.dataset.neutralized === "true") return;
-    
-    if (!video.dataset.eventsAttached) {
-        const p = (e) => { if (config.ig_hideVideos) video.pause(); };
-        video.addEventListener('play', p);
-        video.addEventListener('timeupdate', p);
-        video.dataset.eventsAttached = "true";
-    }
-    video.dataset.neutralized = "true";
 }
 
 function injectQuote(article) {
-    if (article.hasAttribute('data-quote')) return;
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    article.setAttribute('data-quote', randomQuote);
+    if (!article.hasAttribute('data-quote')) {
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        article.setAttribute('data-quote', randomQuote);
+    }
 }
 
-function processInstagramContent() {
-    if (config.ig_hideVideos) {
+function processExistingContent() {
+    const hostname = window.location.hostname;
+    if (hostname.includes("instagram.com")) {
         document.querySelectorAll('video').forEach(neutralizeVideo);
+        document.querySelectorAll('article').forEach(injectQuote);
+    } else if (hostname.includes("youtube.com")) {
+        disableYtAutoplay();
     }
-    const articles = document.querySelectorAll('article');
-    if (articles.length > 0) {
-        articles.forEach(injectQuote);
+}
+
+function disableYtAutoplay() {
+    const btn = document.querySelector(".ytp-autonav-toggle-button");
+    if (btn && btn.getAttribute("aria-checked") === "true") {
+        btn.click();
+        console.log("NoShort: YouTube Autoplay Disabled");
     }
 }
 
 function runInstagramLogic() {
     console.log("NoShort: runInstagramLogic started");
+    
+    // Redirect logic - check every 500ms for SPA navigation
     setInterval(() => {
         const path = window.location.pathname;
         const target = config.ig_redirectUrl || "/direct/inbox/";
 
-        // 1. Reels, Explore, Stories 리다이렉트
         if (config.ig_hideReelsPage) {
             const blockedPaths = ["/reels", "/reel", "/explore", "/stories"];
             if (blockedPaths.some(p => path.startsWith(p)) && path !== target) {
-                console.log("NoShort: Redirecting (Blocked Path)", path);
                 window.location.replace(target);
                 return;
             }
         }
 
-        // 2. 홈 화면 리다이렉트 (홈 탭 숨기기 활성화 시)
         if (config.ig_hideHomeTab && (path === "/" || path === "")) {
             if (path !== target) {
-                console.log("NoShort: Redirecting (Home Tab Hidden)", path, "->", target);
                 window.location.replace(target);
             }
         }
     }, 500);
 
-    setInterval(processInstagramContent, 500);
-    new MutationObserver(processInstagramContent).observe(document.documentElement, { childList: true, subtree: true });
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) { // Element node
+                    if (node.tagName === 'VIDEO') neutralizeVideo(node);
+                    else if (node.tagName === 'ARTICLE') injectQuote(node);
+                    else {
+                        node.querySelectorAll('video').forEach(neutralizeVideo);
+                        node.querySelectorAll('article').forEach(injectQuote);
+                    }
+                }
+            });
+        });
+    });
+
+    observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
 }
 
 function runYouTubeLogic() {
-    setInterval(() => {
-        const btn = document.querySelector(".ytp-autonav-toggle-button");
-        if (btn && btn.getAttribute("aria-checked") === "true") btn.click();
-    }, 2000);
+    console.log("NoShort: runYouTubeLogic started");
+    disableYtAutoplay();
+
+    const observer = new MutationObserver(() => {
+        disableYtAutoplay();
+    });
+
+    observer.observe(document.documentElement, { childList: true, subtree: true });
 }
+
+loadConfig();
 
 loadConfig();
