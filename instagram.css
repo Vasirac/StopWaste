@@ -8,21 +8,32 @@ html.ns-ig-photos article:not(:has(video)) {
     position: relative !important;
     min-height: 300px !important;
 }
+
 html.ns-ig-photos article:not(:has(video))::after {
-    content: attr(data-quote); /* 랜덤 명언 표시 */
+    content: attr(data-quote);
+    /* 랜덤 명언 표시 */
     position: absolute !important;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-color: #000 !important;
     color: #888;
     display: flex !important;
-    justify-content: center; align-items: center;
-    text-align: center; /* 텍스트 중앙 정렬 */
-    padding: 20px; /* 긴 명언 대비 여백 */
-    font-size: 1.1rem; font-weight: 500; font-family: sans-serif;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* 텍스트 중앙 정렬 */
+    padding: 20px;
+    /* 긴 명언 대비 여백 */
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: sans-serif;
     z-index: 9999 !important;
     line-height: 1.5;
 }
-html.ns-ig-photos article:not(:has(video)) > * {
+
+html.ns-ig-photos article:not(:has(video))>* {
     opacity: 0.1 !important;
     pointer-events: none !important;
 }
@@ -33,24 +44,34 @@ html.ns-ig-videos article:has(video) {
     position: relative !important;
     min-height: 300px !important;
 }
+
 html.ns-ig-videos article:has(video)::after {
-    content: attr(data-quote); /* 랜덤 명언 표시 */
+    content: attr(data-quote);
+    /* 랜덤 명언 표시 */
     position: absolute !important;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-color: #000 !important;
     color: #888;
     display: flex !important;
-    justify-content: center; align-items: center;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 20px;
-    font-size: 1.1rem; font-weight: 500; font-family: sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: sans-serif;
     z-index: 9999 !important;
     line-height: 1.5;
 }
+
 html.ns-ig-videos video {
     display: none !important;
 }
-html.ns-ig-videos article:has(video) > * {
+
+html.ns-ig-videos article:has(video)>* {
     opacity: 0.1 !important;
     pointer-events: none !important;
 }
@@ -59,7 +80,7 @@ html.ns-ig-videos article:has(video) > * {
 /* 4. Individual Tab Toggles */
 html.ns-ig-home a[href="/"] svg[aria-label="Home"],
 html.ns-ig-home a[href="/"] svg[aria-label="홈"],
-html.ns-ig-home div:not(._aagx) > a[href="/"][role="link"] {
+html.ns-ig-home div:not(._aagx)>a[href="/"][role="link"] {
     display: none !important;
 }
 
@@ -79,7 +100,7 @@ html.ns-ig-reels [aria-label="Threads"] {
 /* 5. Stories Bar Toggle */
 html.ns-ig-stories div[role="menu"][aria-label="Stories"],
 html.ns-ig-stories div[role="menu"][aria-label="스토리"],
-html.ns-ig-stories main[role="main"] > div > div > div > div > div > div > canvas,
+html.ns-ig-stories main[role="main"]>div>div>div>div>div>div>canvas,
 html.ns-ig-stories main[role="main"] ul li div[role="button"] {
     display: none !important;
 }
@@ -88,10 +109,10 @@ html.ns-ig-stories main[role="main"] ul li div[role="button"] {
 html.ns-ig-numbers li a[href*="/followers/"] span,
 html.ns-ig-numbers li a[href*="/following/"] span,
 html.ns-ig-numbers a[href*="/liked_by/"],
-html.ns-ig-numbers span.html-span.xdj266r, 
+html.ns-ig-numbers span.html-span.xdj266r,
 html.ns-ig-numbers ul li span {
-   filter: blur(5px) !important;
-   opacity: 0.5 !important;
+    filter: blur(5px) !important;
+    opacity: 0.5 !important;
 }
 
 /* 7. Grayscale Mode */
@@ -99,23 +120,31 @@ html.ns-grayscale {
     filter: grayscale(100%) !important;
 }
 
-/* 8. Hide Left Sidebar & Adjust Layout */
-html.ns-ig-sidebar-rec div[role="navigation"],
-html.ns-ig-sidebar-rec aside[role="presentation"],
-html.ns-ig-sidebar-rec .x1q0g3np.x1yztbdb.x1y1aw1k,
-html.ns-ig-sidebar-rec header[role="banner"] {
+/* 8. Hide Left Narrow Nav Bar & Adjust Layout */
+/* 왼쪽의 좁은 아이콘 바(홈, 검색 등)를 숨김 */
+html.ns-ig-sidebar-rec div.x1xgvd2v.x1cy8zhl,
+html.ns-ig-sidebar-rec [role="navigation"]>div>div>div:first-child:not(.x9f619) {
     display: none !important;
 }
 
-/* 사이드바 제거 시 메인 영역 여백 제거 (가로 중앙 정렬 유도) */
+/* 오른쪽 추천(Aside)은 계속 숨김 */
+html.ns-ig-sidebar-rec aside[role="presentation"] {
+    display: none !important;
+}
+
+/* 사이드바 제거 시 메인 영역 여백 제거 및 사이드 패널(DM 리스트 등) 위치 조정 */
 html.ns-ig-sidebar-rec .x78zum5.xdt5ytf.x10ci6zj,
-html.ns-ig-sidebar-rec .x1qjc9v5.x972fbf.xcf7afm.x1ad0727 {
+html.ns-ig-sidebar-rec .x1qjc9v5.x972fbf.xcf7afm.x1ad0727,
+html.ns-ig-sidebar-rec .x1xgvd2v.x1cy8zhl~div {
     margin-left: 0 !important;
 }
 
 html.ns-ig-sidebar-rec main[role="main"] {
     margin-left: 0 !important;
     width: 100% !important;
+}
+
+/* DM 리스트나 검색 패널 같은 2차 사이드바는 보이게 유지 */
+html.ns-ig-sidebar-rec section.x78zum5.xdt5ytf.x1iyjqo2 {
     display: flex !important;
-    justify-content: center !important;
 }
