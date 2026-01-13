@@ -3,11 +3,12 @@ console.log("%c NoShort Multi: Script Starting... ", "background: #333; color: #
 
 let config = {
     ig_hideReelsPage: true, ig_redirectUrl: "/direct/inbox/",
-    ig_hideVideos: true, ig_hidePhotos: true, ig_hideSidebarAndRec: false, ig_hideFeed: true, 
+    ig_hideVideos: true, ig_hidePhotos: true, ig_hideSidebarAndRec: false, ig_hideFeed: true,
     ig_hideHomeTab: false, ig_hideExploreTab: true, ig_hideReelsTab: true, ig_hideStories: false,
     ig_hideNumbers: false, ig_grayscaleMode: false,
-    yt_hideShorts: true, yt_hideHome: true, yt_hideSidebar: true, 
-    yt_hideComments: true, yt_hideRelated: true
+    yt_hideShorts: true, yt_hideHome: true, yt_hideSidebar: true,
+    yt_hideComments: true, yt_hideRelated: true,
+    yt_hideSubs: false, yt_hideYou: false, yt_hideExplore: false
 };
 
 const quotes = [
@@ -31,7 +32,7 @@ function loadConfig() {
                 console.log("NoShort: Storage Loaded", items);
                 config = { ...config, ...items };
                 applyConfig();
-                startLogic(); 
+                startLogic();
             });
         } else {
             console.log("NoShort: No chrome.storage, using default");
@@ -82,7 +83,10 @@ function applyConfig() {
         'ns-yt-home': config.yt_hideHome,
         'ns-yt-sidebar': config.yt_hideSidebar,
         'ns-yt-comments': config.yt_hideComments,
-        'ns-yt-related': config.yt_hideRelated
+        'ns-yt-related': config.yt_hideRelated,
+        'ns-yt-subs': config.yt_hideSubs,
+        'ns-yt-you': config.yt_hideYou,
+        'ns-yt-explore': config.yt_hideExplore
     };
 
     for (const [className, enabled] of Object.entries(configClasses)) {
@@ -134,7 +138,7 @@ function disableYtAutoplay() {
 
 function runInstagramLogic() {
     console.log("NoShort: runInstagramLogic started");
-    
+
     // Redirect logic - check every 500ms for SPA navigation
     setInterval(() => {
         const path = window.location.pathname;
@@ -183,7 +187,5 @@ function runYouTubeLogic() {
 
     observer.observe(document.documentElement, { childList: true, subtree: true });
 }
-
-loadConfig();
 
 loadConfig();

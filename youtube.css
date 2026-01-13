@@ -48,6 +48,36 @@ html.ns-yt-related #related {
     display: none !important;
 }
 
+
+/* 6. Granular Sidebar Toggles */
+/* Subscriptions */
+html.ns-yt-subs ytd-guide-section-renderer:has(a[href="/feed/subscriptions"]),
+html.ns-yt-subs ytd-mini-guide-entry-renderer:has(a[href="/feed/subscriptions"]) {
+    display: none !important;
+}
+
+/* 'You' Section */
+html.ns-yt-you ytd-guide-section-renderer:has(a[href="/feed/you"]),
+html.ns-yt-you ytd-mini-guide-entry-renderer:has(a[href="/feed/you"]) {
+    display: none !important;
+}
+
+/* 유튜브 탐색(Explore) 메뉴 즉시 숨기기: 초기 노출 아이템(Anchor) 기반 */
+/* 1. 쇼핑 또는 음악 채널 ID가 포함된 섹션 전체 (초기 로딩 시점부터 존재) */
+html.ns-yt-explore ytd-guide-section-renderer:has(a[href*="/channel/UCkYQyvc_i9hXEo4xic9Hh2g"]),
+/* 쇼핑 */
+html.ns-yt-explore ytd-guide-section-renderer:has(a[href*="/channel/UC-9-kyTW8ZkZNDHQJ6FgpwQ"])
+
+/* 음악 */
+    {
+    display: none !important;
+}
+
+/* 2. (보조) 탐색 나침반 아이콘 데이터 기반 */
+html.ns-yt-explore ytd-guide-section-renderer:has(path[d*='2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z']) {
+    display: none !important;
+}
+
 /* Always Hide Autoplay Toggle & Endscreen (Basic Policy) */
 .ytp-autonav-toggle-button,
 .ytp-endscreen-content {

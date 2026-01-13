@@ -6,7 +6,7 @@ const defaultOptions = {
     ig_hideVideos: true,
     ig_hidePhotos: false, // 기본값 False (새 기능)
     ig_hideSidebarAndRec: false,
-    ig_hideFeed: true, 
+    ig_hideFeed: true,
     ig_hideHomeTab: false,
     ig_hideExploreTab: true,
     ig_hideReelsTab: true,
@@ -20,6 +20,9 @@ const defaultOptions = {
     yt_hideSidebar: true,
     yt_hideComments: true,
     yt_hideRelated: true,
+    yt_hideSubs: false,
+    yt_hideYou: false,
+    yt_hideExplore: false,
 
     // Language
     userLocale: "auto"
@@ -50,6 +53,9 @@ const i18nData = {
         "optHideSidebar": "Hide Sidebar & Header",
         "optHideComments": "Hide Comments",
         "optHideRelated": "Hide Related Videos",
+        "optHideSubs": "Hide Subscriptions",
+        "optHideYou": "Hide 'You' Section",
+        "optHideExplore": "Hide Explore",
         "statusSaved": "Settings saved automatically"
     },
     "ko": {
@@ -76,6 +82,9 @@ const i18nData = {
         "optHideSidebar": "사이드바 및 헤더 숨기기",
         "optHideComments": "댓글 숨기기",
         "optHideRelated": "관련 동영상 숨기기",
+        "optHideSubs": "구독 숨기기",
+        "optHideYou": "내 페이지 숨기기",
+        "optHideExplore": "탐색 숨기기",
         "statusSaved": "설정이 자동으로 저장되었습니다"
     },
     "ja": {
@@ -128,6 +137,9 @@ const i18nData = {
         "optHideSidebar": "隐藏侧边栏和顶部栏",
         "optHideComments": "隐藏评论",
         "optHideRelated": "隐藏相关视频",
+        "optHideSubs": "隐藏订阅内容",
+        "optHideYou": "隐藏“个人”板块",
+        "optHideExplore": "隐藏探索",
         "statusSaved": "设置已自动保存"
     },
     "hi": {
@@ -154,6 +166,9 @@ const i18nData = {
         "optHideSidebar": "साइडबार और हेडर छिपाएं",
         "optHideComments": "टिप्पणियाँ छिपाएं",
         "optHideRelated": "संबंधित वीडियो छिपाएं",
+        "optHideSubs": "सदस्यता छिपाएं",
+        "optHideYou": "'आपका' अनुभाग छिपाएं",
+        "optHideExplore": "एक्सप्लोर छिपाएं",
         "statusSaved": "सेटिंग्स स्वचालित रूप से सहेजी गईं"
     }
 };
@@ -169,7 +184,7 @@ function getSystemLocale() {
 
 function updateTexts(locale) {
     if (locale === 'auto') locale = getSystemLocale();
-    
+
     const texts = i18nData[locale] || i18nData['en'];
 
     // Header
@@ -178,7 +193,7 @@ function updateTexts(locale) {
 
     // IG Section
     document.querySelector('.ig-title').textContent = texts.secIG;
-    
+
     // Helpers
     const setLabel = (id, text) => {
         const el = document.getElementById(id);
@@ -228,6 +243,9 @@ function updateTexts(locale) {
     setLabel('yt_hideSidebar', texts.optHideSidebar);
     setLabel('yt_hideComments', texts.optHideComments);
     setLabel('yt_hideRelated', texts.optHideRelated);
+    setLabel('yt_hideSubs', texts.optHideSubs);
+    setLabel('yt_hideYou', texts.optHideYou);
+    setLabel('yt_hideExplore', texts.optHideExplore);
 
     // Footer
     document.getElementById('status').dataset.savedText = texts.statusSaved;
@@ -245,7 +263,7 @@ function saveOptions() {
             }
         }
     });
-    
+
     // userLocale manually
     options.userLocale = document.getElementById('userLocale').value;
 
@@ -258,7 +276,7 @@ function saveOptions() {
             status.textContent = savedText;
             status.style.color = "#aaa";
         }, 1000);
-        
+
         // Update texts immediately
         updateTexts(options.userLocale);
     });
@@ -276,7 +294,7 @@ function restoreOptions() {
                 }
             }
         });
-        
+
         // Restore Locale
         const localeEl = document.getElementById('userLocale');
         if (localeEl) {

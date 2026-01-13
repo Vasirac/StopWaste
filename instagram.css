@@ -84,7 +84,10 @@ html.ns-ig-home div:not(._aagx)>a[href="/"][role="link"] {
     display: none !important;
 }
 
-html.ns-ig-explore a[href*="/explore/"] {
+/* 인스타그램 탐색 탭 숨기기: 링크와 그 상위 요소를 포함하여 타겟팅 */
+html.ns-ig-explore a[href='/explore/'],
+html.ns-ig-explore a[href*='/explore/'],
+html.ns-ig-explore div:has(> a[href='/explore/']) {
     display: none !important;
 }
 
