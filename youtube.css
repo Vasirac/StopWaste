@@ -5,7 +5,18 @@ html.ns-yt-shorts ytd-reel-shelf-renderer,
 html.ns-yt-shorts ytd-rich-shelf-renderer[is-shorts],
 html.ns-yt-shorts a[href^="/shorts"],
 html.ns-yt-shorts [title="Shorts"],
-html.ns-yt-shorts ytd-mini-guide-entry-renderer[aria-label="Shorts"] {
+html.ns-yt-shorts ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+html.ns-yt-shorts #shorts-container {
+    overflow: hidden !important;
+}
+
+html.ns-yt-shorts ytd-reel-shelf-renderer,
+html.ns-yt-shorts ytd-rich-shelf-renderer[is-shorts],
+html.ns-yt-shorts a[href^="/shorts"],
+html.ns-yt-shorts [title="Shorts"],
+html.ns-yt-shorts ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+html.ns-yt-shorts #navigation-button-up,
+html.ns-yt-shorts #navigation-button-down {
     display: none !important;
 }
 

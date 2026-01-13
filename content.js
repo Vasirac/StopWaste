@@ -214,6 +214,31 @@ function runYouTubeLogic() {
     console.log("NoShort: runYouTubeLogic started");
     disableYtAutoplay();
 
+    // Block Shorts scrolling but allow viewing
+    const blockShortsScroll = (e) => {
+        if (!config.yt_hideShorts) return;
+        if (!window.location.pathname.startsWith("/shorts/")) return;
+
+        // Key blocking
+        if (e.type === "keydown") {
+            const blockedKeys = ["ArrowDown", "ArrowUp", "PageDown", "PageUp"];
+            if (blockedKeys.includes(e.key)) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log("NoShort: Shorts Scroll Blocked (Key)");
+            }
+        }
+        // Wheel blocking
+        if (e.type === "wheel" || e.type === "mousewheel") {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("NoShort: Shorts Scroll Blocked (Wheel)");
+        }
+    };
+
+    window.addEventListener("keydown", blockShortsScroll, true);
+    window.addEventListener("wheel", blockShortsScroll, { passive: false, capture: true });
+
     const observer = new MutationObserver(() => {
         disableYtAutoplay();
     });
