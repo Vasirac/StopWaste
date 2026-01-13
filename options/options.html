@@ -6,42 +6,117 @@
   <title>NoShort Settings</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       padding: 0;
-      width: 340px;
-      background-color: #f8f9fa;
+      width: 720px;
+      /* Reduced width to be less 'long' horizontally */
+      /* Soft gradient background for glass effect */
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      height: 600px;
+      /* Locked to max height */
       margin: 0;
       color: #333;
+      overflow: hidden;
+      /* Remove scrollbar */
     }
 
     header {
-      background: #222;
+      background: rgba(34, 34, 34, 0.9);
+      backdrop-filter: blur(8px);
       color: #fff;
-      padding: 15px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.1em;
+      padding: 5px 20px;
+      height: 55px;
+      /* Restored to a more balanced height */
+      position: relative;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .header-content {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .header-title {
+      font-size: 1.5em;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .locale-container {
+      position: absolute;
+      bottom: 12px;
+      right: 20px;
+    }
+
+    .locale-container select {
+      font-size: 0.85em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .locale-container select:hover {
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .container {
-      padding: 12px;
+      padding: 20px 12px 0 12px;
+      /* Increased top gap for breathing room */
+    }
+
+    .sections-wrapper {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
     }
 
     .platform-section {
-      background: #fff;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 12px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      /* Liquid Glass Style */
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      padding: 10px 14px;
+      flex: 1;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    }
+
+    .platform-section:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Vertical Divider */
+    .divider {
+      width: 1px;
+      background-color: #eee;
+      align-self: stretch;
+      margin: 0 4px;
     }
 
     .section-title {
-      font-size: 0.85em;
-      color: #888;
+      font-size: 0.8em;
+      color: #666;
+      /* Gray for categories */
       margin-bottom: 8px;
       text-transform: uppercase;
       font-weight: 700;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       padding-bottom: 4px;
       display: flex;
       align-items: center;
@@ -49,10 +124,13 @@
     }
 
     .sub-title {
-      font-size: 0.75em;
-      color: #aaa;
-      margin: 10px 0 5px 0;
+      font-size: 0.7em;
+      color: #777;
+      /* Gray for categories */
+      margin: 6px 0 4px 0;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
     .ig-title {
@@ -68,8 +146,11 @@
       align-items: center;
       cursor: pointer;
       justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 0.9em;
+      margin-bottom: 3px;
+      font-size: 0.85em;
+      color: #000;
+      /* Black for main content */
+      font-weight: 500;
     }
 
     label:last-child {
@@ -79,12 +160,12 @@
     /* Input Style */
     input[type="text"] {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 10px;
+      padding: 6px;
+      margin-top: 2px;
+      margin-bottom: 6px;
       border: 1px solid #ddd;
       border-radius: 4px;
-      font-size: 0.9em;
+      font-size: 0.85em;
       box-sizing: border-box;
     }
 
@@ -102,14 +183,15 @@
     /* Toggle Switch Style */
     input[type="checkbox"] {
       appearance: none;
-      width: 32px;
-      height: 18px;
-      background: #ddd;
+      width: 36px;
+      height: 20px;
+      background: rgba(0, 0, 0, 0.1);
       border-radius: 20px;
       position: relative;
       cursor: pointer;
       outline: none;
-      transition: background 0.3s;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     input[type="checkbox"]::after {
@@ -121,7 +203,8 @@
       height: 14px;
       background: #fff;
       border-radius: 50%;
-      transition: transform 0.3s;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     input[type="checkbox"]:checked {
@@ -129,128 +212,147 @@
     }
 
     input[type="checkbox"]:checked::after {
-      transform: translateX(14px);
+      transform: translateX(16px);
     }
 
     .footer {
       text-align: center;
       font-size: 0.75em;
-      color: #aaa;
-      padding: 5px 0 10px 0;
+      color: #666;
+      padding: 5px 0;
+      opacity: 0;
+      /* Hidden by default */
+      transition: opacity 0.5s ease;
+    }
+
+    .footer.show {
+      opacity: 1;
+      /* Faintly visible when triggered */
     }
   </style>
 </head>
 
 <body>
   <header>
-    StopWaste
-    <div style="margin-top: 5px;">
-      <select id="userLocale" style="font-size: 0.8em; padding: 2px; border-radius: 4px;">
-        <option value="auto">Auto (System)</option>
-        <option value="en">English</option>
-        <option value="ko">한국어</option>
-        <option value="ja">日本語</option>
-        <option value="zh_CN">中文</option>
-        <option value="hi">हिन्दी</option>
+    <div class="header-content">
+      <img src="../icon.png" class="header-icon" alt="Icon">
+      <span class="header-title">StopWaste</span>
+    </div>
+    <div class="locale-container">
+      <select id="userLocale">
+        <option value="auto" style="color: black;">Auto (System)</option>
+        <option value="en" style="color: black;">English</option>
+        <option value="ko" style="color: black;">한국어</option>
+        <option value="ja" style="color: black;">日本語</option>
+        <option value="zh_CN" style="color: black;">中文</option>
+        <option value="hi" style="color: black;">히न्दी</option>
       </select>
     </div>
   </header>
 
   <div class="container">
-    <!-- Instagram Settings -->
-    <div class="platform-section">
-      <div class="section-title ig-title">📸 Instagram</div>
+    <div class="sections-wrapper">
+      <!-- Instagram Settings -->
+      <div class="platform-section">
+        <div class="section-title ig-title">📸 Instagram</div>
 
-      <div class="sub-title">Block & Redirect</div>
-      <label>
-        <span>Redirect Reels/Explore</span>
-        <input type="checkbox" id="ig_hideReelsPage">
-      </label>
+        <div class="sub-title">Block & Redirect</div>
+        <label>
+          <span>Redirect Reels/Explore</span>
+          <input type="checkbox" id="ig_hideReelsPage">
+        </label>
 
-      <div class="input-desc">Redirect Target (e.g. / or /direct/inbox/)</div>
-      <input type="text" id="ig_redirectUrl" placeholder="/direct/inbox/">
+        <div class="input-desc">Redirect Target (e.g. / or /direct/inbox/)</div>
+        <input type="text" id="ig_redirectUrl" placeholder="/direct/inbox/">
 
-      <label>
-        <span>Remove Feed Videos</span>
-        <input type="checkbox" id="ig_hideVideos">
-      </label>
-      <label>
-        <span>Remove Feed Photos (NEW)</span>
-        <input type="checkbox" id="ig_hidePhotos">
-      </label>
-      <label>
-        <span>Hide Sidebar & Recommendations</span>
-        <input type="checkbox" id="ig_hideSidebarAndRec">
-      </label>
+        <label>
+          <span>Remove Feed Videos</span>
+          <input type="checkbox" id="ig_hideVideos">
+        </label>
+        <label>
+          <span>Remove Feed Photos (NEW)</span>
+          <input type="checkbox" id="ig_hidePhotos">
+        </label>
+        <label>
+          <span>Hide Sidebar & Recommendations</span>
+          <input type="checkbox" id="ig_hideSidebarAndRec">
+        </label>
 
-      <div class="sub-title">Hide UI</div>
-      <label>
-        <span>Hide Main Feed (Whole)</span>
-        <input type="checkbox" id="ig_hideFeed">
-      </label>
-      <label>
-        <span>Hide Home Tab</span>
-        <input type="checkbox" id="ig_hideHomeTab">
-      </label>
-      <label>
-        <span>Hide Explore Tab</span>
-        <input type="checkbox" id="ig_hideExploreTab">
-      </label>
-      <label>
-        <span>Hide Reels Tab</span>
-        <input type="checkbox" id="ig_hideReelsTab">
-      </label>
-      <label>
-        <span>Hide Stories Bar</span>
-        <input type="checkbox" id="ig_hideStories">
-      </label>
+        <div class="sub-title">Hide UI</div>
+        <label>
+          <span>Hide Main Feed (Whole)</span>
+          <input type="checkbox" id="ig_hideFeed">
+        </label>
+        <label>
+          <span>Hide Home Tab</span>
+          <input type="checkbox" id="ig_hideHomeTab">
+        </label>
+        <label>
+          <span>Hide Explore Tab</span>
+          <input type="checkbox" id="ig_hideExploreTab">
+        </label>
+        <label>
+          <span>Hide Reels Tab</span>
+          <input type="checkbox" id="ig_hideReelsTab">
+        </label>
+        <label>
+          <span>Hide Stories Bar</span>
+          <input type="checkbox" id="ig_hideStories">
+        </label>
 
-      <div class="sub-title">Others</div>
-      <label>
-        <span>Hide Numbers</span>
-        <input type="checkbox" id="ig_hideNumbers">
-      </label>
-      <label>
-        <span>Grayscale Mode</span>
-        <input type="checkbox" id="ig_grayscaleMode">
-      </label>
-    </div>
+        <div class="sub-title">Others</div>
+        <label>
+          <span>Hide Numbers</span>
+          <input type="checkbox" id="ig_hideNumbers">
+        </label>
+        <label>
+          <span>Grayscale Mode</span>
+          <input type="checkbox" id="ig_grayscaleMode">
+        </label>
+      </div>
 
-    <!-- YouTube Settings -->
-    <div class="platform-section">
-      <div class="section-title yt-title">📺 YouTube</div>
-      <label>
-        <span>Block Shorts</span>
-        <input type="checkbox" id="yt_hideShorts">
-      </label>
-      <label>
-        <span>Minimal Home (Search Only)</span>
-        <input type="checkbox" id="yt_hideHome">
-      </label>
-      <label>
-        <span>Hide Sidebar & Header</span>
-        <input type="checkbox" id="yt_hideSidebar">
-      </label>
-      <label>
-        <span>Hide Comments</span>
-        <input type="checkbox" id="yt_hideComments">
-      </label>
-      <label>
-        <span>Hide Related Videos</span>
-        <input type="checkbox" id="yt_hideRelated">
-      </label>
-      <label>
-        <span>Hide Subscriptions</span>
-        <input type="checkbox" id="yt_hideSubs">
-      </label>
-      <label>
-        <span>Hide 'You' Section</span>
-        <input type="checkbox" id="yt_hideYou">
-      </label>
-      <label>
-        <span>Hide Explore</span>
-        <input type="checkbox" id="yt_hideExplore">
-      </label>
+      <div class="divider"></div>
+
+      <!-- YouTube Settings -->
+      <div class="platform-section yt-section">
+        <h2 class="yt-title">📺 YouTube</h2>
+
+        <div class="sub-title">Block & Redirect</div>
+        <label>
+          <span class="optBlockShorts">Block Shorts</span>
+          <input type="checkbox" id="yt_hideShorts">
+        </label>
+        <label>
+          <span class="optMinimalHome">Minimal Home (Search Only)</span>
+          <input type="checkbox" id="yt_hideHome">
+        </label>
+
+        <div class="sub-title">Hide UI</div>
+        <label>
+          <span class="optHideSidebar">Hide Sidebar & Header</span>
+          <input type="checkbox" id="yt_hideSidebar">
+        </label>
+        <label>
+          <span class="optHideComments">Hide Comments</span>
+          <input type="checkbox" id="yt_hideComments">
+        </label>
+        <label>
+          <span class="optHideRelated">Hide Related Videos</span>
+          <input type="checkbox" id="yt_hideRelated">
+        </label>
+        <label>
+          <span class="optHideSubs">Hide Subscriptions</span>
+          <input type="checkbox" id="yt_hideSubs">
+        </label>
+        <label>
+          <span class="optHideYou">Hide 'You' Section</span>
+          <input type="checkbox" id="yt_hideYou">
+        </label>
+        <label>
+          <span class="optHideExplore">Hide Explore</span>
+          <input type="checkbox" id="yt_hideExplore">
+        </label>
+      </div>
     </div>
 
     <div class="footer" id="status">Settings saved automatically</div>

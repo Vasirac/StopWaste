@@ -30,7 +30,7 @@ const defaultOptions = {
 
 const i18nData = {
     "en": {
-        "extName": "NoShort Multi",
+        "extName": "StopWaste",
         "secIG": "📸 Instagram",
         "secBlock": "Block & Redirect",
         "optRedirect": "Redirect Reels/Explore",
@@ -59,7 +59,7 @@ const i18nData = {
         "statusSaved": "Settings saved automatically"
     },
     "ko": {
-        "extName": "NoShort 멀티",
+        "extName": "StopWaste",
         "secIG": "📸 인스타그램",
         "secBlock": "차단 및 리다이렉트",
         "optRedirect": "릴스/탐색 리다이렉트",
@@ -88,7 +88,7 @@ const i18nData = {
         "statusSaved": "설정이 자동으로 저장되었습니다"
     },
     "ja": {
-        "extName": "NoShort マルチ",
+        "extName": "StopWaste",
         "secIG": "📸 Instagram",
         "secBlock": "ブロックとリダイレクト",
         "optRedirect": "リール/検索をリダイレクト",
@@ -114,7 +114,7 @@ const i18nData = {
         "statusSaved": "設定が自動的に保存されました"
     },
     "zh_CN": {
-        "extName": "NoShort 多功能版",
+        "extName": "StopWaste",
         "secIG": "📸 Instagram",
         "secBlock": "拦截与重定向",
         "optRedirect": "重定向 Reels/探索",
@@ -137,13 +137,13 @@ const i18nData = {
         "optHideSidebar": "隐藏侧边栏和顶部栏",
         "optHideComments": "隐藏评论",
         "optHideRelated": "隐藏相关视频",
-        "optHideSubs": "隐藏订阅内容",
-        "optHideYou": "隐藏“个人”板块",
+        "optHideSubs": "隐藏订阅",
+        "optHideYou": "隐藏“你”部分",
         "optHideExplore": "隐藏探索",
         "statusSaved": "设置已自动保存"
     },
     "hi": {
-        "extName": "NoShort मल्टी",
+        "extName": "StopWaste",
         "secIG": "📸 Instagram",
         "secBlock": "ब्लॉक और पुनर्निर्देशन",
         "optRedirect": "रील्स/एक्सप्लोर रीडायरेक्ट करें",
@@ -188,8 +188,8 @@ function updateTexts(locale) {
     const texts = i18nData[locale] || i18nData['en'];
 
     // Header
-    const header = document.querySelector('header');
-    if (header && header.firstChild) header.firstChild.textContent = texts.extName + " ";
+    const headerTitle = document.querySelector('.header-title');
+    if (headerTitle) headerTitle.textContent = texts.extName;
 
     // IG Section
     document.querySelector('.ig-title').textContent = texts.secIG;
@@ -238,6 +238,8 @@ function updateTexts(locale) {
 
     // YouTube Section
     document.querySelector('.yt-title').textContent = texts.secYT;
+    setSubTitle(3, texts.secBlock);
+    setSubTitle(4, texts.secHideUI);
     setLabel('yt_hideShorts', texts.optBlockShorts);
     setLabel('yt_hideHome', texts.optMinimalHome);
     setLabel('yt_hideSidebar', texts.optHideSidebar);
@@ -271,11 +273,14 @@ function saveOptions() {
         const status = document.getElementById('status');
         const savedText = status.dataset.savedText || "Saved!";
         status.textContent = savedText;
-        status.style.color = "#4CAF50";
+
+        // Trigger fade in
+        status.classList.add('show');
+
         setTimeout(() => {
-            status.textContent = savedText;
-            status.style.color = "#aaa";
-        }, 1000);
+            // Fade out
+            status.classList.remove('show');
+        }, 2000);
 
         // Update texts immediately
         updateTexts(options.userLocale);
