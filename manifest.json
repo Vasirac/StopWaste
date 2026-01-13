@@ -19,11 +19,26 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.instagram.com/*",
+        "https://www.instagram.com/*"
+      ],
+      "css": [
+        "instagram.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
         "https://www.youtube.com/*"
       ],
-      "css": ["instagram.css", "youtube.css"],
-      "js": ["content.js"],
+      "css": [
+        "youtube.css"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_end"
     }
   ],
@@ -37,8 +52,13 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["instagram.css", "youtube.css"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "instagram.css",
+        "youtube.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }

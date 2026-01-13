@@ -68,6 +68,8 @@ if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged)
 function applyConfig() {
     console.log("NoShort: applyConfig called");
     const html = document.documentElement;
+    const hostname = window.location.hostname;
+
     const configClasses = {
         'ns-ig-photos': config.ig_hidePhotos,
         'ns-ig-sidebar-rec': config.ig_hideSidebarAndRec,
@@ -90,7 +92,18 @@ function applyConfig() {
     };
 
     for (const [className, enabled] of Object.entries(configClasses)) {
-        html.classList.toggle(className, enabled);
+        // Only apply classes relevant to the current site
+        const isIgClass = className.startsWith('ns-ig-') || className === 'ns-grayscale';
+        const isYtClass = className.startsWith('ns-yt-');
+        const isCurrentSite = (hostname.includes('instagram.com') && isIgClass) ||
+            (hostname.includes('youtube.com') && isYtClass);
+
+        if (isCurrentSite) {
+            html.classList.toggle(className, enabled);
+        } else {
+            // Ensure classes from the other site are removed
+            html.classList.remove(className);
+        }
     }
 
     processExistingContent();
@@ -144,6 +157,7 @@ function runInstagramLogic() {
         const path = window.location.pathname;
         const target = config.ig_redirectUrl || "/direct/inbox/";
 
+        // 1. Hide Reels Page logic (Legacy/Broad block)
         if (config.ig_hideReelsPage) {
             const blockedPaths = ["/reels", "/reel", "/explore", "/stories"];
             if (blockedPaths.some(p => path.startsWith(p)) && path !== target) {
@@ -152,9 +166,28 @@ function runInstagramLogic() {
             }
         }
 
+        // 2. Specific Tab Redirects
+        // Home Tab
         if (config.ig_hideHomeTab && (path === "/" || path === "")) {
             if (path !== target) {
                 window.location.replace(target);
+                return;
+            }
+        }
+
+        // Explore Tab
+        if (config.ig_hideExploreTab && path.startsWith("/explore")) {
+            if (path !== target) {
+                window.location.replace(target);
+                return;
+            }
+        }
+
+        // Reels Tab
+        if (config.ig_hideReelsTab && (path.startsWith("/reels") || path.startsWith("/reel"))) {
+            if (path !== target) {
+                window.location.replace(target);
+                return;
             }
         }
     }, 500);
