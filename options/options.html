@@ -10,14 +10,15 @@
       padding: 0;
       width: 720px;
       /* Reduced width to be less 'long' horizontally */
-      /* Soft gradient background for glass effect */
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      height: 600px;
+      /* Soft gradient background for glass effect - Vertical to match L/R opacity */
+      background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+      background-attachment: fixed;
+      min-height: 600px;
       /* Locked to max height */
       margin: 0;
       color: #333;
-      overflow: hidden;
-      /* Remove scrollbar */
+      overflow-y: auto;
+      /* Allow scrolling */
     }
 
     header {
@@ -87,7 +88,7 @@
 
     .platform-section {
       /* Liquid Glass Style */
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -251,6 +252,23 @@
   </header>
 
   <div class="container">
+
+
+    <div class="strict-section"
+      style="margin-bottom: 12px; background: rgba(255, 245, 245, 0.65); backdrop-filter: blur(12px); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255, 0, 0, 0.15); box-shadow: 0 4px 12px rgba(220, 53, 69, 0.1);">
+      <div class="section-title strict-title" style="color: #dc3545;">🔐 Strict Mode</div>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <label style="margin: 0; flex: 1;">
+          <span class="optStrictDesc">Enable Strict Mode</span>
+          <input type="checkbox" id="strict_mode">
+        </label>
+        <span id="unlock-msg"
+          style="font-size: 0.85em; color: #dc3545; font-weight: bold; margin-left: 10px; opacity: 0; transition: opacity 0.3s;"></span>
+      </div>
+      <div class="input-desc strict-helper" style="margin-top: 6px; margin-bottom: 0;">Prevents changing settings when
+        enabled.</div>
+    </div>
+
     <div class="sections-wrapper">
       <!-- Instagram Settings -->
       <div class="platform-section">
@@ -262,8 +280,10 @@
           <input type="checkbox" id="ig_hideReelsPage">
         </label>
 
-        <div class="input-desc">Redirect Target (e.g. / or /direct/inbox/)</div>
-        <input type="text" id="ig_redirectUrl" placeholder="/direct/inbox/">
+        <div class="input-container">
+          <div class="input-desc">Redirect Target (e.g. / or /direct/inbox/)</div>
+          <input type="text" id="ig_redirectUrl" placeholder="/direct/inbox/">
+        </div>
 
         <label>
           <span>Remove Feed Videos</span>
@@ -315,12 +335,16 @@
 
       <!-- YouTube Settings -->
       <div class="platform-section yt-section">
-        <h2 class="yt-title">📺 YouTube</h2>
+        <div class="section-title yt-title">📺 YouTube</div>
 
         <div class="sub-title">Block & Redirect</div>
         <label>
           <span class="optBlockShorts">Block Shorts</span>
           <input type="checkbox" id="yt_hideShorts">
+        </label>
+        <label>
+          <span class="optBlurThumbnails">Blur Thumbnails</span>
+          <input type="checkbox" id="yt_blurThumbnails">
         </label>
         <label>
           <span class="optMinimalHome">Hide Home Feed</span>
@@ -366,6 +390,8 @@
         </label>
       </div>
     </div>
+
+
 
     <div class="footer" id="status">Settings saved automatically</div>
   </div>

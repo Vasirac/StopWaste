@@ -1,5 +1,8 @@
 /* global chrome */
 const defaultOptions = {
+    // Strict Mode
+    strict_mode: false,
+
     // Instagram
     ig_hideReelsPage: true,
     ig_redirectUrl: "/direct/inbox/",
@@ -16,6 +19,7 @@ const defaultOptions = {
 
     // YouTube
     yt_hideShorts: true,
+    yt_blurThumbnails: false,
     yt_hideHome: true,
     yt_hideSidebar: true,
     yt_hideHeader: false,
@@ -34,6 +38,11 @@ const defaultOptions = {
 const i18nData = {
     "en": {
         "extName": "StopWaste",
+        "secStrict": "🔐 Strict Mode",
+        "optStrictDesc": "Enable Strict Mode",
+        "descStrictHelper": "Prevents changing settings when enabled.",
+        "msgWait": "Wait {n}s...",
+        "msgUnlock": "Unlocked",
         "secIG": "📸 Instagram",
         "secBlock": "Block & Redirect",
         "optRedirect": "Redirect Reels/Explore",
@@ -52,6 +61,7 @@ const i18nData = {
         "optGrayscale": "Grayscale Mode",
         "secYT": "📺 YouTube",
         "optBlockShorts": "Block Shorts",
+        "optBlurThumbnails": "Blur Thumbnails",
         "optMinimalHome": "Hide Home Feed",
         "optHideSidebar": "Hide Sidebar",
         "optHideHeader": "Hide Header",
@@ -66,6 +76,11 @@ const i18nData = {
     },
     "ko": {
         "extName": "StopWaste",
+        "secStrict": "🔐 엄격 모드",
+        "optStrictDesc": "엄격 모드 활성화",
+        "descStrictHelper": "활성화 시 다른 설정을 변경할 수 없습니다.",
+        "msgWait": "{n}초 대기...",
+        "msgUnlock": "해제됨",
         "secIG": "📸 인스타그램",
         "secBlock": "차단 및 리다이렉트",
         "optRedirect": "릴스/탐색 리다이렉트",
@@ -84,6 +99,7 @@ const i18nData = {
         "optGrayscale": "흑백 모드",
         "secYT": "📺 유튜브",
         "optBlockShorts": "쇼츠 차단",
+        "optBlurThumbnails": "썸네일 블러 처리",
         "optMinimalHome": "메인화면 알고리즘 숨기기",
         "optHideSidebar": "사이드바 숨기기",
         "optHideHeader": "헤더 숨기기",
@@ -98,6 +114,11 @@ const i18nData = {
     },
     "ja": {
         "extName": "StopWaste",
+        "secStrict": "🔐 厳格モード",
+        "optStrictDesc": "厳格モードを有効化",
+        "descStrictHelper": "有効化すると他の設定を変更できません。",
+        "msgWait": "{n}秒お待ちください...",
+        "msgUnlock": "解除されました",
         "secIG": "📸 Instagram",
         "secBlock": "ブロックとリダイレクト",
         "optRedirect": "リール/検索をリダイレクト",
@@ -116,6 +137,7 @@ const i18nData = {
         "optGrayscale": "グレースケールモード",
         "secYT": "📺 YouTube",
         "optBlockShorts": "Shortsをブロック",
+        "optBlurThumbnails": "サムネイルをぼかす",
         "optMinimalHome": "ホームフィードを隠す",
         "optHideSidebar": "サイドバーを隠す",
         "optHideHeader": "ヘッダーを隠す",
@@ -127,6 +149,11 @@ const i18nData = {
     },
     "zh_CN": {
         "extName": "StopWaste",
+        "secStrict": "🔐 严格模式",
+        "optStrictDesc": "启用严格模式",
+        "descStrictHelper": "启用后无法更改其他设置。",
+        "msgWait": "请等待 {n} 秒...",
+        "msgUnlock": "已解锁",
         "secIG": "📸 Instagram",
         "secBlock": "拦截与重定向",
         "optRedirect": "重定向 Reels/探索",
@@ -145,6 +172,7 @@ const i18nData = {
         "optGrayscale": "黑白模式",
         "secYT": "📺 YouTube",
         "optBlockShorts": "拦截 Shorts",
+        "optBlurThumbnails": "模糊缩略图",
         "optMinimalHome": "隐藏主页推荐",
         "optHideSidebar": "隐藏侧边栏",
         "optHideHeader": "隐藏顶部栏",
@@ -159,6 +187,11 @@ const i18nData = {
     },
     "hi": {
         "extName": "StopWaste",
+        "secStrict": "🔐 सख्त मोड",
+        "optStrictDesc": "सख्त मोड सक्षम करें",
+        "descStrictHelper": "सक्षम होने पर सेटिंग्स नहीं बदली जा सकतीं।",
+        "msgWait": "{n} सेकंड प्रतीक्षा करें...",
+        "msgUnlock": "अनलॉक किया गया",
         "secIG": "📸 Instagram",
         "secBlock": "ब्लॉक और पुनर्निर्देशन",
         "optRedirect": "रील्स/एक्सप्लोर रीडायरेक्ट करें",
@@ -177,6 +210,7 @@ const i18nData = {
         "optGrayscale": "ग्रेस्केल मोड",
         "secYT": "📺 YouTube",
         "optBlockShorts": "Shorts ब्लॉक करें",
+        "optBlurThumbnails": "थंबनेल धुंधला करें",
         "optMinimalHome": "होम फ़ीड छिपाएं",
         "optHideSidebar": "साइडबार छिपाएं",
         "optHideHeader": "हेडर छिपाएं",
@@ -208,6 +242,11 @@ function updateTexts(locale) {
     // Header
     const headerTitle = document.querySelector('.header-title');
     if (headerTitle) headerTitle.textContent = texts.extName;
+
+    // Strict Mode
+    document.querySelector('.strict-title').textContent = texts.secStrict;
+    document.querySelector('.optStrictDesc').textContent = texts.optStrictDesc;
+    document.querySelector('.strict-helper').textContent = texts.descStrictHelper;
 
     // IG Section
     document.querySelector('.ig-title').textContent = texts.secIG;
@@ -259,6 +298,7 @@ function updateTexts(locale) {
     setSubTitle(3, texts.secBlock);
     setSubTitle(4, texts.secHideUI);
     setLabel('yt_hideShorts', texts.optBlockShorts);
+    setLabel('yt_blurThumbnails', texts.optBlurThumbnails);
     setLabel('yt_hideHome', texts.optMinimalHome);
     setLabel('yt_hideSidebar', texts.optHideSidebar);
     setLabel('yt_hideHeader', texts.optHideHeader);
@@ -269,6 +309,8 @@ function updateTexts(locale) {
     setLabel('yt_hideSubs', texts.optHideSubs);
     setLabel('yt_hideYou', texts.optHideYou);
     setLabel('yt_hideExplore', texts.optHideExplore);
+
+
 
     // Footer
     document.getElementById('status').dataset.savedText = texts.statusSaved;
@@ -305,8 +347,13 @@ function saveOptions() {
 
         // Update texts immediately
         updateTexts(options.userLocale);
+
+        // Update Lock State
+        updateLockState(options.strict_mode);
     });
 }
+
+
 
 function restoreOptions() {
     chrome.storage.sync.get(defaultOptions, (items) => {
@@ -328,12 +375,91 @@ function restoreOptions() {
         }
 
         updateTexts(items.userLocale);
+        updateLockState(items.strict_mode);
     });
+}
+
+function updateLockState(isLocked) {
+    // Disable inputs
+    const inputs = document.querySelectorAll('input:not(#strict_mode, #userLocale)');
+    inputs.forEach(input => {
+        input.disabled = isLocked;
+        if (isLocked) {
+            input.parentElement.style.opacity = "0.5";
+            input.parentElement.style.pointerEvents = "none";
+        } else {
+            input.parentElement.style.opacity = "1";
+            input.parentElement.style.pointerEvents = "auto";
+        }
+    });
+
+    // Disable Section Hover Effects
+    const sections = document.querySelectorAll('.platform-section');
+    sections.forEach(section => {
+        if (isLocked) {
+            section.style.pointerEvents = "none";
+            section.style.transform = "none";
+        } else {
+            section.style.pointerEvents = "auto";
+            section.style.transform = "";
+        }
+    });
+
+    const strictInput = document.getElementById('strict_mode');
+    if (strictInput) strictInput.checked = isLocked;
+}
+
+let unlockTimer = null;
+
+function handleStrictToggle(e) {
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+        // Engaging Strict Mode: Immediate
+        saveOptions();
+    } else {
+        // Disabling Strict Mode: Delay required
+        e.preventDefault(); // Prevent immediate toggle
+
+        if (unlockTimer) return; // Already unlocking
+
+        const msgEl = document.getElementById('unlock-msg');
+        let seconds = 10;
+
+        // Get current locale for message
+        const locale = document.getElementById('userLocale').value;
+        const currentLang = (locale === 'auto') ? getSystemLocale() : locale;
+        const texts = i18nData[currentLang] || i18nData['en'];
+
+        msgEl.style.opacity = "1";
+        msgEl.textContent = texts.msgWait.replace("{n}", seconds);
+
+        unlockTimer = setInterval(() => {
+            seconds--;
+            msgEl.textContent = texts.msgWait.replace("{n}", seconds);
+
+            if (seconds <= 0) {
+                clearInterval(unlockTimer);
+                unlockTimer = null;
+
+                // Allow unlock
+                e.target.checked = false;
+                msgEl.textContent = texts.msgUnlock;
+                saveOptions();
+
+                setTimeout(() => {
+                    msgEl.style.opacity = "0";
+                }, 2000);
+            }
+        }, 1000);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.querySelectorAll('input').forEach(input => {
-    if (input.type === 'text') {
+    if (input.id === 'strict_mode') {
+        input.addEventListener('click', handleStrictToggle);
+    } else if (input.type === 'text') {
         input.addEventListener('blur', saveOptions);
         input.addEventListener('keydown', (e) => { if (e.key === 'Enter') saveOptions(); });
     } else {
