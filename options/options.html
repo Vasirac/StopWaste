@@ -269,6 +269,25 @@
         enabled.</div>
     </div>
 
+    <div class="reminder-section"
+      style="margin-bottom: 12px; background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(12px); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
+      <div class="section-title reminder-title" style="color: #4CAF50;">🔔 Reminder</div>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <label style="margin: 0; flex: 1;">
+          <span class="optReminderDesc">Enable Soft Reminders</span>
+          <input type="checkbox" id="soft_reminders_enabled">
+        </label>
+      </div>
+      <div style="margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+          <span class="optReminderInterval" style="font-size: 0.85em; font-weight: 500;">Interval</span>
+          <span id="timer-label" style="font-size: 0.85em; font-weight: 700; color: #4CAF50;">15m</span>
+        </div>
+        <input type="range" id="soft_reminders_interval" min="5" max="60" step="5"
+          style="width: 100%; cursor: pointer; accent-color: #4CAF50;">
+      </div>
+    </div>
+
     <div class="sections-wrapper">
       <!-- Instagram Settings -->
       <div class="platform-section">

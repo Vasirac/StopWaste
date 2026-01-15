@@ -31,6 +31,10 @@ const defaultOptions = {
     yt_hideYou: false,
     yt_hideExplore: false,
 
+    // Reminder
+    soft_reminders_enabled: false,
+    soft_reminders_interval: 15,
+
     // Language
     userLocale: "auto"
 };
@@ -72,6 +76,11 @@ const i18nData = {
         "optHideSubs": "Hide Subscriptions",
         "optHideYou": "Hide 'You' Section",
         "optHideExplore": "Hide Explore",
+        "secReminder": "🔔 Reminder",
+        "optEnableReminder": "Soft Reminders",
+        "optReminderInterval": "Interval",
+        "msgReminderEvery": "Every {n} minutes",
+        "reminderText": "What are you doing right now?",
         "statusSaved": "Settings saved automatically"
     },
     "ko": {
@@ -110,6 +119,11 @@ const i18nData = {
         "optHideSubs": "구독 숨기기",
         "optHideYou": "내 페이지 숨기기",
         "optHideExplore": "탐색 숨기기",
+        "secReminder": "🔔 리마인더",
+        "optEnableReminder": "소프트 리마인더 활성화",
+        "optReminderInterval": "알림 간격",
+        "msgReminderEvery": "{n}분마다",
+        "reminderText": "지금 무엇을 하고 계신가요?",
         "statusSaved": "설정이 자동으로 저장되었습니다"
     },
     "ja": {
@@ -145,6 +159,11 @@ const i18nData = {
         "optHideComments": "コメントを隠す",
         "optHideRelated": "関連動画を隠す",
         "optHidePlaylist": "プレイリストを隠す",
+        "secReminder": "🔔 ️リマ인더",
+        "optEnableReminder": "ソフトリマインダーを有効にする",
+        "optReminderInterval": "通知間隔",
+        "msgReminderEvery": "{n}分ごとに",
+        "reminderText": "今、何をしていますか？",
         "statusSaved": "設定が自動的に保存されました"
     },
     "zh_CN": {
@@ -183,6 +202,11 @@ const i18nData = {
         "optHideSubs": "隐藏订阅",
         "optHideYou": "隐藏“你”部分",
         "optHideExplore": "隐藏探索",
+        "secReminder": "🔔 提醒",
+        "optEnableReminder": "开启软提醒",
+        "optReminderInterval": "提醒间隔",
+        "msgReminderEvery": "每 {n} 分钟",
+        "reminderText": "你现在在做什么？",
         "statusSaved": "设置已自动保存"
     },
     "hi": {
@@ -221,6 +245,11 @@ const i18nData = {
         "optHideSubs": "सदस्यता छिपाएं",
         "optHideYou": "'आपका' अनुभाग छिपाएं",
         "optHideExplore": "एक्सप्लोर छिपाएं",
+        "secReminder": "🔔 रिमाइंडर",
+        "optEnableReminder": "सॉफ्ट रिमाइंडर सक्षम करें",
+        "optReminderInterval": "अंतराल",
+        "msgReminderEvery": "प्रत्येक {n} मिनट",
+        "reminderText": "आप अभी क्या कर रहे हैं?",
         "statusSaved": "सेटिंग्स स्वचालित रूप से सहेजी गईं"
     }
 };
@@ -232,6 +261,14 @@ function getSystemLocale() {
     if (lang.startsWith('zh')) return 'zh_CN';
     if (lang.startsWith('hi')) return 'hi';
     return 'en';
+}
+
+function updateTimerLabel() {
+    const val = document.getElementById('soft_reminders_interval').value;
+    const locale = document.getElementById('userLocale').value;
+    const currentLang = (locale === 'auto') ? getSystemLocale() : locale;
+    const texts = i18nData[currentLang] || i18nData['en'];
+    document.getElementById('timer-label').textContent = texts.msgReminderEvery.replace("{n}", val);
 }
 
 function updateTexts(locale) {
@@ -310,6 +347,12 @@ function updateTexts(locale) {
     setLabel('yt_hideYou', texts.optHideYou);
     setLabel('yt_hideExplore', texts.optHideExplore);
 
+    // Reminder Section
+    document.querySelector('.reminder-title').textContent = texts.secReminder;
+    document.querySelector('.optReminderDesc').textContent = texts.optEnableReminder;
+    document.querySelector('.optReminderInterval').textContent = texts.optReminderInterval;
+    updateTimerLabel();
+
 
 
     // Footer
@@ -323,6 +366,8 @@ function saveOptions() {
         if (el) {
             if (el.type === 'checkbox') {
                 options[key] = el.checked;
+            } else if (el.type === 'range') {
+                options[key] = parseInt(el.value);
             } else if (el.type === 'text' || el.tagName === 'SELECT') {
                 options[key] = el.value || defaultOptions[key];
             }
@@ -350,6 +395,7 @@ function saveOptions() {
 
         // Update Lock State
         updateLockState(options.strict_mode);
+        updateTimerLabel();
     });
 }
 
@@ -362,6 +408,8 @@ function restoreOptions() {
             if (el) {
                 if (el.type === 'checkbox') {
                     el.checked = items[key];
+                } else if (el.type === 'range') {
+                    el.value = items[key];
                 } else if (el.type === 'text') {
                     el.value = items[key];
                 }
@@ -455,6 +503,7 @@ function handleStrictToggle(e) {
     }
 }
 
+document.getElementById('soft_reminders_interval').addEventListener('input', updateTimerLabel);
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.querySelectorAll('input').forEach(input => {
     if (input.id === 'strict_mode') {

@@ -8,8 +8,25 @@ let config = {
     ig_hideNumbers: false, ig_grayscaleMode: false,
     yt_hideShorts: true, yt_blurThumbnails: false, yt_hideHome: true, yt_hideSidebar: true,
     yt_hideHeader: false, yt_hideNotifications: false, yt_hideComments: true, yt_hideRelated: true,
-    yt_hidePlaylist: false, yt_hideSubs: false, yt_hideYou: false, yt_hideExplore: false
+    yt_hidePlaylist: false, yt_hideSubs: false, yt_hideYou: false, yt_hideExplore: false,
+    soft_reminders_enabled: false, soft_reminders_interval: 15
 };
+
+const reminderTexts = {
+    'ko': '지금 무엇을 하고 계신가요?',
+    'en': 'What are you doing right now?',
+    'ja': '今、何をしていますか？',
+    'zh_CN': '你现在在做什么？',
+    'hi': 'आप अभी क्या कर रहे हैं?'
+};
+
+function getReminderMessage() {
+    const lang = navigator.language.split('-')[0];
+    return reminderTexts[lang] || reminderTexts['en'];
+}
+
+let reminderTimer = null;
+let lastReminderTime = Date.now();
 
 const quotes = [
     "The future depends on what we do in the present.",
@@ -117,6 +134,114 @@ function applyConfig() {
     }
 
     processExistingContent();
+    setupReminder();
+}
+
+function setupReminder() {
+    if (reminderTimer) clearInterval(reminderTimer);
+    if (!config.soft_reminders_enabled) return;
+
+    // Check every 30 seconds to see if it's time
+    reminderTimer = setInterval(() => {
+        const now = Date.now();
+        const elapsedMinutes = (now - lastReminderTime) / (1000 * 60);
+
+        if (elapsedMinutes >= config.soft_reminders_interval) {
+            showReminder(getReminderMessage(), '🔔');
+            // Show the second reminder after the first one's animation starts to fade
+            setTimeout(() => {
+                showReminder('Touch the Grass!', '🌿');
+            }, 8000);
+            lastReminderTime = now;
+        }
+    }, 30000);
+}
+
+function showReminder(message, icon) {
+    // Remove existing if any
+    const existing = document.getElementById('ns-soft-reminder');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'ns-soft-reminder';
+
+    const content = document.createElement('div');
+    content.className = 'ns-reminder-content';
+
+    const iconDiv = document.createElement('div');
+    iconDiv.className = 'ns-reminder-icon';
+    iconDiv.textContent = icon;
+
+    const text = document.createElement('div');
+    text.className = 'ns-reminder-text';
+    text.textContent = message;
+
+    content.appendChild(iconDiv);
+    content.appendChild(text);
+    overlay.appendChild(content);
+
+    // Inject styles if not present
+    if (!document.getElementById('ns-reminder-styles')) {
+        const style = document.createElement('style');
+        style.id = 'ns-reminder-styles';
+        style.textContent = `
+            #ns-soft-reminder {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 99999999;
+                pointer-events: none;
+                animation: ns-fade-in-out 7s ease-in-out forwards;
+            }
+            .ns-reminder-content {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                padding: 30px 50px;
+                border-radius: 24px;
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+                text-align: center;
+                transform: translateY(20px);
+                animation: ns-slide-up 7s ease-in-out forwards;
+            }
+            .ns-reminder-icon {
+                font-size: 40px;
+                margin-bottom: 15px;
+            }
+            .ns-reminder-text {
+                font-family: 'Inter', -apple-system, sans-serif;
+                font-size: 24px;
+                font-weight: 700;
+                color: #222;
+            }
+            @keyframes ns-fade-in-out {
+                0% { opacity: 0; }
+                10% { opacity: 1; }
+                85% { opacity: 1; }
+                100% { opacity: 0; }
+            }
+            @keyframes ns-slide-up {
+                0% { transform: translateY(40px); }
+                10% { transform: translateY(0); }
+                85% { transform: translateY(0); }
+                100% { transform: translateY(-40px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(overlay);
+
+    // Auto remove after animation
+    setTimeout(() => {
+        if (overlay.parentNode) overlay.remove();
+    }, 7500);
 }
 
 function neutralizeVideo(video) {
