@@ -7,8 +7,9 @@ let config = {
     ig_hideHomeTab: false, ig_hideExploreTab: true, ig_hideReelsTab: true, ig_hideStories: false,
     ig_hideNumbers: false, ig_grayscaleMode: false,
     yt_hideShorts: true, yt_hideHome: true, yt_hideSidebar: true,
-    yt_hideComments: true, yt_hideRelated: true,
-    yt_hideSubs: false, yt_hideYou: false, yt_hideExplore: false
+    yt_hideShorts: true, yt_hideHome: true, yt_hideSidebar: true,
+    yt_hideHeader: false, yt_hideNotifications: false, yt_hideComments: true, yt_hideRelated: true,
+    yt_hidePlaylist: false, yt_hideSubs: false, yt_hideYou: false, yt_hideExplore: false
 };
 
 const quotes = [
@@ -84,8 +85,11 @@ function applyConfig() {
         'ns-yt-shorts': config.yt_hideShorts,
         'ns-yt-home': config.yt_hideHome,
         'ns-yt-sidebar': config.yt_hideSidebar,
+        'ns-yt-header': config.yt_hideHeader,
+        'ns-yt-notifications': config.yt_hideNotifications,
         'ns-yt-comments': config.yt_hideComments,
         'ns-yt-related': config.yt_hideRelated,
+        'ns-yt-playlist': config.yt_hidePlaylist,
         'ns-yt-subs': config.yt_hideSubs,
         'ns-yt-you': config.yt_hideYou,
         'ns-yt-explore': config.yt_hideExplore

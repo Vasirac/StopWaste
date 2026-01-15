@@ -18,8 +18,11 @@ const defaultOptions = {
     yt_hideShorts: true,
     yt_hideHome: true,
     yt_hideSidebar: true,
+    yt_hideHeader: false,
+    yt_hideNotifications: false,
     yt_hideComments: true,
     yt_hideRelated: true,
+    yt_hidePlaylist: false,
     yt_hideSubs: false,
     yt_hideYou: false,
     yt_hideExplore: false,
@@ -49,10 +52,13 @@ const i18nData = {
         "optGrayscale": "Grayscale Mode",
         "secYT": "📺 YouTube",
         "optBlockShorts": "Block Shorts",
-        "optMinimalHome": "Minimal Home (Search Only)",
-        "optHideSidebar": "Hide Sidebar & Header",
+        "optMinimalHome": "Hide Home Feed",
+        "optHideSidebar": "Hide Sidebar",
+        "optHideHeader": "Hide Header",
+        "optHideNotifications": "Hide Notifications",
         "optHideComments": "Hide Comments",
         "optHideRelated": "Hide Related Videos",
+        "optHidePlaylist": "Hide Playlist",
         "optHideSubs": "Hide Subscriptions",
         "optHideYou": "Hide 'You' Section",
         "optHideExplore": "Hide Explore",
@@ -78,10 +84,13 @@ const i18nData = {
         "optGrayscale": "흑백 모드",
         "secYT": "📺 유튜브",
         "optBlockShorts": "쇼츠 차단",
-        "optMinimalHome": "미니멀 홈 (검색만 가능)",
-        "optHideSidebar": "사이드바 및 헤더 숨기기",
+        "optMinimalHome": "메인화면 알고리즘 숨기기",
+        "optHideSidebar": "사이드바 숨기기",
+        "optHideHeader": "헤더 숨기기",
+        "optHideNotifications": "알림 버튼 숨기기",
         "optHideComments": "댓글 숨기기",
         "optHideRelated": "관련 동영상 숨기기",
+        "optHidePlaylist": "플레이리스트 숨기기",
         "optHideSubs": "구독 숨기기",
         "optHideYou": "내 페이지 숨기기",
         "optHideExplore": "탐색 숨기기",
@@ -107,10 +116,13 @@ const i18nData = {
         "optGrayscale": "グレースケールモード",
         "secYT": "📺 YouTube",
         "optBlockShorts": "Shortsをブロック",
-        "optMinimalHome": "ミニマルホーム (検索のみ)",
-        "optHideSidebar": "サイドバーとヘッダーを隠す",
+        "optMinimalHome": "ホームフィードを隠す",
+        "optHideSidebar": "サイドバーを隠す",
+        "optHideHeader": "ヘッダーを隠す",
+        "optHideNotifications": "通知ボタンを隠す",
         "optHideComments": "コメントを隠す",
         "optHideRelated": "関連動画を隠す",
+        "optHidePlaylist": "プレイリストを隠す",
         "statusSaved": "設定が自動的に保存されました"
     },
     "zh_CN": {
@@ -133,10 +145,13 @@ const i18nData = {
         "optGrayscale": "黑白模式",
         "secYT": "📺 YouTube",
         "optBlockShorts": "拦截 Shorts",
-        "optMinimalHome": "极简首页 (仅搜索)",
-        "optHideSidebar": "隐藏侧边栏和顶部栏",
+        "optMinimalHome": "隐藏主页推荐",
+        "optHideSidebar": "隐藏侧边栏",
+        "optHideHeader": "隐藏顶部栏",
+        "optHideNotifications": "隐藏通知按钮",
         "optHideComments": "隐藏评论",
         "optHideRelated": "隐藏相关视频",
+        "optHidePlaylist": "隐藏播放列表",
         "optHideSubs": "隐藏订阅",
         "optHideYou": "隐藏“你”部分",
         "optHideExplore": "隐藏探索",
@@ -162,10 +177,13 @@ const i18nData = {
         "optGrayscale": "ग्रेस्केल मोड",
         "secYT": "📺 YouTube",
         "optBlockShorts": "Shorts ब्लॉक करें",
-        "optMinimalHome": "न्यूनतम होम (केवल खोज)",
-        "optHideSidebar": "साइडबार और हेडर छिपाएं",
+        "optMinimalHome": "होम फ़ीड छिपाएं",
+        "optHideSidebar": "साइडबार छिपाएं",
+        "optHideHeader": "हेडर छिपाएं",
+        "optHideNotifications": "सूचनाएं छिपाएं",
         "optHideComments": "टिप्पणियाँ छिपाएं",
         "optHideRelated": "संबंधित वीडियो छिपाएं",
+        "optHidePlaylist": "प्लेलिस्ट छिपाएं",
         "optHideSubs": "सदस्यता छिपाएं",
         "optHideYou": "'आपका' अनुभाग छिपाएं",
         "optHideExplore": "एक्सप्लोर छिपाएं",
@@ -243,8 +261,11 @@ function updateTexts(locale) {
     setLabel('yt_hideShorts', texts.optBlockShorts);
     setLabel('yt_hideHome', texts.optMinimalHome);
     setLabel('yt_hideSidebar', texts.optHideSidebar);
+    setLabel('yt_hideHeader', texts.optHideHeader);
+    setLabel('yt_hideNotifications', texts.optHideNotifications);
     setLabel('yt_hideComments', texts.optHideComments);
     setLabel('yt_hideRelated', texts.optHideRelated);
+    setLabel('yt_hidePlaylist', texts.optHidePlaylist);
     setLabel('yt_hideSubs', texts.optHideSubs);
     setLabel('yt_hideYou', texts.optHideYou);
     setLabel('yt_hideExplore', texts.optHideExplore);

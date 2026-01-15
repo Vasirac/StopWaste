@@ -25,13 +25,11 @@ html.ns-yt-home ytd-browse[page-subtype="home"] {
     display: none !important;
 }
 
-/* 3. Hide Sidebar & Header Elements */
+/* 3. Hide Sidebar Elements */
 html.ns-yt-sidebar #guide,
 html.ns-yt-sidebar ytd-mini-guide-renderer,
 html.ns-yt-sidebar #guide-button,
-html.ns-yt-sidebar #guide-spacer,
-html.ns-yt-sidebar #start.ytd-masthead,
-html.ns-yt-sidebar #end.ytd-masthead {
+html.ns-yt-sidebar #guide-spacer {
     display: none !important;
 }
 
@@ -39,11 +37,20 @@ html.ns-yt-sidebar ytd-app[guide-persistent-and-visible] #page-manager.ytd-app {
     margin-left: 0 !important;
 }
 
-html.ns-yt-sidebar #center.ytd-masthead {
-    margin: 0 auto !important;
-    max-width: 720px !important;
-    width: 100% !important;
-    display: flex !important;
+/* Hide Header */
+html.ns-yt-header #masthead-container,
+html.ns-yt-header #masthead,
+html.ns-yt-header .ytd-masthead {
+    display: none !important;
+}
+
+html.ns-yt-header #page-manager.ytd-app {
+    margin-top: 0 !important;
+}
+
+/* Hide Notification Button */
+html.ns-yt-notifications ytd-notification-topbar-button-renderer {
+    display: none !important;
 }
 
 /* 4. Hide Comments */
@@ -54,8 +61,14 @@ html.ns-yt-comments #chat {
 }
 
 /* 5. Hide Related Videos (Sidebar in Watch) */
-html.ns-yt-related #secondary,
-html.ns-yt-related #related {
+html.ns-yt-related #secondary #related,
+html.ns-yt-related ytd-watch-next-secondary-results-renderer #items {
+    display: none !important;
+}
+
+/* Hide Playlist Panel */
+html.ns-yt-playlist ytd-playlist-panel-renderer,
+html.ns-yt-playlist #secondary ytd-playlist-panel-renderer {
     display: none !important;
 }
 
