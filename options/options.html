@@ -407,6 +407,39 @@
           <span class="optHideExplore">Hide Explore</span>
           <input type="checkbox" id="yt_hideExplore">
         </label>
+
+        <!-- Site Blocking Schedule -->
+        <div class="yt-hardblock-container"
+          style="margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.05);">
+          <div class="section-title yt-hardblock-title" style="color: #FF0000; font-size: 0.75em;">⏰ Site Blocking
+            Schedule</div>
+          <label>
+            <span class="optEnableHardBlock">Enable Blocking</span>
+            <input type="checkbox" id="yt_hard_block_enabled">
+          </label>
+          <div style="display: flex; gap: 10px; margin-top: 8px;">
+            <div style="flex: 1;">
+              <div class="input-desc optStartTime" style="font-size: 0.7em; margin-bottom: 2px;">Start Time</div>
+              <input type="time" id="yt_hard_block_start"
+                style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.8em;">
+            </div>
+            <div style="flex: 1;">
+              <div class="input-desc optEndTime" style="font-size: 0.7em; margin-bottom: 2px;">End Time</div>
+              <input type="time" id="yt_hard_block_end"
+                style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.8em;">
+            </div>
+          </div>
+          <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+            <label style="font-size: 0.75em; border-bottom: none;">
+              <span class="optBlockYT">Apply to YouTube</span>
+              <input type="checkbox" id="block_yt">
+            </label>
+            <label style="font-size: 0.75em; border-bottom: none;">
+              <span class="optBlockIG">Apply to Instagram</span>
+              <input type="checkbox" id="block_ig">
+            </label>
+          </div>
+        </div>
       </div>
     </div>
 

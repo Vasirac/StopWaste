@@ -30,6 +30,11 @@ const defaultOptions = {
     yt_hideSubs: false,
     yt_hideYou: false,
     yt_hideExplore: false,
+    yt_hard_block_enabled: false,
+    yt_hard_block_start: "09:00",
+    yt_hard_block_end: "18:00",
+    block_yt: true,
+    block_ig: false,
 
     // Reminder
     soft_reminders_enabled: false,
@@ -80,7 +85,14 @@ const i18nData = {
         "optEnableReminder": "Soft Reminders",
         "optReminderInterval": "Interval",
         "msgReminderEvery": "Every {n} minutes",
-        "reminderText": "What are you doing right now?",
+        "secHardBlock": "⏰ Site Blocking Schedule",
+        "optEnableHardBlock": "Enable Blocking",
+        "optStartTime": "Start Time",
+        "optEndTime": "End Time",
+        "optBlockYT": "Apply to YouTube",
+        "optBlockIG": "Apply to Instagram",
+        "msgFocusTime": "It's Focus Time!",
+        "msgTakeABreak": "This site is restricted until {time}",
         "statusSaved": "Settings saved automatically"
     },
     "ko": {
@@ -123,7 +135,14 @@ const i18nData = {
         "optEnableReminder": "소프트 리마인더 활성화",
         "optReminderInterval": "알림 간격",
         "msgReminderEvery": "{n}분마다",
-        "reminderText": "지금 무엇을 하고 계신가요?",
+        "secHardBlock": "⏰ 사이트 차단 스케줄",
+        "optEnableHardBlock": "차단 활성화",
+        "optStartTime": "시작 시간",
+        "optEndTime": "종료 시간",
+        "optBlockYT": "유튜브에 적용",
+        "optBlockIG": "인스타그램에 적용",
+        "msgFocusTime": "집중 시간입니다!",
+        "msgTakeABreak": "이 사이트가 {time}까지 제한됩니다",
         "statusSaved": "설정이 자동으로 저장되었습니다"
     },
     "ja": {
@@ -159,12 +178,22 @@ const i18nData = {
         "optHideComments": "コメントを隠す",
         "optHideRelated": "関連動画を隠す",
         "optHidePlaylist": "プレイリストを隠す",
-        "secReminder": "🔔 ️リマ인더",
+        "optHideSubs": "サブスクリプションを隠す",
+        "optHideYou": "「あなた」セクションを隠す",
+        "optHideExplore": "探索を隠す",
+        "secReminder": "🔔 ️リマインダー",
         "optEnableReminder": "ソフトリマインダーを有効にする",
         "optReminderInterval": "通知間隔",
         "msgReminderEvery": "{n}分ごとに",
-        "reminderText": "今、何をしていますか？",
-        "statusSaved": "設定が自動的に保存されました"
+        "secHardBlock": "⏰ サイトブロック スケジュール",
+        "optEnableHardBlock": "ブロックを有効化",
+        "optStartTime": "開始時間",
+        "optEndTime": "終了時間",
+        "optBlockYT": "YouTubeに適用",
+        "optBlockIG": "Instagramに適用",
+        "msgFocusTime": "集中する時間です！",
+        "msgTakeABreak": "このサイトは{time}まで制限されています",
+        "statusSaved": "設定가자동으로저장되었습니다"
     },
     "zh_CN": {
         "extName": "StopWaste",
@@ -206,7 +235,14 @@ const i18nData = {
         "optEnableReminder": "开启软提醒",
         "optReminderInterval": "提醒间隔",
         "msgReminderEvery": "每 {n} 分钟",
-        "reminderText": "你现在在做什么？",
+        "secHardBlock": "⏰ 网站屏蔽计划",
+        "optEnableHardBlock": "开启屏蔽",
+        "optStartTime": "开始时间",
+        "optEndTime": "结束时间",
+        "optBlockYT": "应用于 YouTube",
+        "optBlockIG": "应用于 Instagram",
+        "msgFocusTime": "现在是专注时间！",
+        "msgTakeABreak": "该网站已限制访问，直至 {time}",
         "statusSaved": "设置已自动保存"
     },
     "hi": {
@@ -249,7 +285,14 @@ const i18nData = {
         "optEnableReminder": "सॉफ्ट रिमाइंडर सक्षम करें",
         "optReminderInterval": "अंतराल",
         "msgReminderEvery": "प्रत्येक {n} मिनट",
-        "reminderText": "आप अभी क्या कर रहे हैं?",
+        "secHardBlock": "⏰ साइट ब्लॉक शेड्यूल",
+        "optEnableHardBlock": "ब्लॉकिंग सक्षम करें",
+        "optStartTime": "शुरू होने का समय",
+        "optEndTime": "समाप्ति का समय",
+        "optBlockYT": "YouTube पर लागू करें",
+        "optBlockIG": "Instagram पर लागू करें",
+        "msgFocusTime": "यह फोकस समय है!",
+        "msgTakeABreak": "यह साइट {time} तक प्रतिबंधित है",
         "statusSaved": "सेटिंग्स स्वचालित रूप से सहेजी गईं"
     }
 };
@@ -347,6 +390,15 @@ function updateTexts(locale) {
     setLabel('yt_hideYou', texts.optHideYou);
     setLabel('yt_hideExplore', texts.optHideExplore);
 
+    // Hard Block Section
+    const hardBlockTitle = document.querySelector('.yt-hardblock-title');
+    if (hardBlockTitle) hardBlockTitle.textContent = texts.secHardBlock;
+    setLabel('yt_hard_block_enabled', texts.optEnableHardBlock);
+    setDesc('yt_hard_block_start', texts.optStartTime);
+    setDesc('yt_hard_block_end', texts.optEndTime);
+    setLabel('block_yt', texts.optBlockYT);
+    setLabel('block_ig', texts.optBlockIG);
+
     // Reminder Section
     document.querySelector('.reminder-title').textContent = texts.secReminder;
     document.querySelector('.optReminderDesc').textContent = texts.optEnableReminder;
@@ -368,7 +420,7 @@ function saveOptions() {
                 options[key] = el.checked;
             } else if (el.type === 'range') {
                 options[key] = parseInt(el.value);
-            } else if (el.type === 'text' || el.tagName === 'SELECT') {
+            } else if (el.type === 'text' || el.type === 'time' || el.tagName === 'SELECT') {
                 options[key] = el.value || defaultOptions[key];
             }
         }
@@ -410,8 +462,8 @@ function restoreOptions() {
                     el.checked = items[key];
                 } else if (el.type === 'range') {
                     el.value = items[key];
-                } else if (el.type === 'text') {
-                    el.value = items[key];
+                } else if (el.type === 'text' || el.type === 'time') {
+                    el.value = items[key] || defaultOptions[key];
                 }
             }
         });

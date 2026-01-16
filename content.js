@@ -9,8 +9,25 @@ let config = {
     yt_hideShorts: true, yt_blurThumbnails: false, yt_hideHome: true, yt_hideSidebar: true,
     yt_hideHeader: false, yt_hideNotifications: false, yt_hideComments: true, yt_hideRelated: true,
     yt_hidePlaylist: false, yt_hideSubs: false, yt_hideYou: false, yt_hideExplore: false,
+    yt_hideYou: false, yt_hideExplore: false,
+    yt_hard_block_enabled: false, yt_hard_block_start: "09:00", yt_hard_block_end: "18:00",
+    block_yt: true, block_ig: false,
     soft_reminders_enabled: false, soft_reminders_interval: 15
 };
+
+const i18nContent = {
+    "en": { "focus": "It's Focus Time!", "restrict": "This site is restricted until {time}" },
+    "ko": { "focus": "집중 시간입니다!", "restrict": "이 사이트가 {time}까지 제한됩니다" },
+    "ja": { "focus": "集中する時間です！", "restrict": "このサイトは{time}まで制限されています" },
+    "zh_CN": { "focus": "现在是专注时间！", "restrict": "该网站已限制访问，直至 {time}" },
+    "hi": { "focus": "यह फोकस समय है!", "restrict": "यह 사이트 {time} तक प्रतिबंधित है" }
+};
+
+function getI18n(key) {
+    const lang = navigator.language.split('-')[0];
+    const data = i18nContent[lang] || i18nContent['en'];
+    return data[key] || key;
+}
 
 const reminderTexts = {
     'ko': '지금 무엇을 하고 계신가요?',
@@ -286,6 +303,7 @@ function disableYtAutoplay() {
 
 function runInstagramLogic() {
     console.log("NoShort: runInstagramLogic started");
+    checkHardBlock();
 
     // Redirect logic - check every 500ms for SPA navigation
     setInterval(() => {
@@ -347,6 +365,7 @@ function runInstagramLogic() {
 
 function runYouTubeLogic() {
     console.log("NoShort: runYouTubeLogic started");
+    checkHardBlock();
     disableYtAutoplay();
 
     let lastScrollBlockTime = 0;
@@ -386,6 +405,101 @@ function runYouTubeLogic() {
     });
 
     observer.observe(document.documentElement, { childList: true, subtree: true });
+}
+
+function checkHardBlock() {
+    if (!config.yt_hard_block_enabled) return;
+
+    const hostname = window.location.hostname;
+    const isYt = hostname.includes('youtube.com');
+    const isIg = hostname.includes('instagram.com');
+
+    // Only proceed if the toggle for the current site is enabled
+    if (isYt && !config.block_yt) return;
+    if (isIg && !config.block_ig) return;
+
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+
+    const [startH, startM] = config.yt_hard_block_start.split(':').map(Number);
+    const [endH, endM] = config.yt_hard_block_end.split(':').map(Number);
+
+    const startTime = startH * 60 + startM;
+    const endTime = endH * 60 + endM;
+
+    let isBlocked = false;
+    if (startTime < endTime) {
+        // Normal range (e.g., 09:00 to 18:00)
+        isBlocked = currentTime >= startTime && currentTime < endTime;
+    } else {
+        // Overnight range (e.g., 22:00 to 06:00)
+        isBlocked = currentTime >= startTime || currentTime < endTime;
+    }
+
+    if (isBlocked) {
+        showHardBlockOverlay(config.yt_hard_block_end);
+    }
+}
+
+function showHardBlockOverlay(endTime) {
+    if (document.getElementById('ns-hard-block-overlay')) return;
+
+    // Stop YouTube video if playing
+    const video = document.querySelector('video');
+    if (video) {
+        video.pause();
+        video.src = "";
+        video.load();
+    }
+
+    const overlay = document.createElement('div');
+    overlay.id = 'ns-hard-block-overlay';
+    overlay.style = `
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        z-index: 2147483647; font-family: 'Inter', -apple-system, sans-serif;
+    `;
+
+    const card = document.createElement('div');
+    card.style = `
+        background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(30px);
+        padding: 50px 70px; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.1); text-align: center;
+    `;
+
+    const icon = document.createElement('div');
+    icon.textContent = "🛡️";
+    icon.style.fontSize = "64px";
+    icon.style.marginBottom = "20px";
+
+    const title = document.createElement('div');
+    title.textContent = getI18n('focus');
+    title.style.fontSize = "32px";
+    title.style.fontWeight = "800";
+    title.style.color = "#222";
+    title.style.marginBottom = "10px";
+
+    const sub = document.createElement('div');
+    sub.textContent = getI18n('restrict').replace("{time}", endTime);
+    sub.style.fontSize = "18px";
+    sub.style.color = "#666";
+
+    card.appendChild(icon);
+    card.appendChild(title);
+    card.appendChild(sub);
+    overlay.appendChild(card);
+
+    document.documentElement.appendChild(overlay);
+    document.documentElement.style.overflow = 'hidden';
+
+    // Repeatedly check and ensure overlay stays
+    setInterval(() => {
+        if (!document.getElementById('ns-hard-block-overlay')) {
+            document.documentElement.appendChild(overlay);
+        }
+        document.documentElement.style.overflow = 'hidden';
+    }, 1000);
 }
 
 loadConfig();
