@@ -1,0 +1,68 @@
+/* --- YouTube Mobile CSS (Ultra Nuke) --- */
+
+/* 1. SHORTS - FULL NUKE */
+.ns-yt-shorts [href*="/shorts/"],
+.ns-yt-shorts [aria-label*="Shorts"],
+.ns-yt-shorts [aria-label*="쇼츠"],
+.ns-yt-shorts ytm-reel-shelf-renderer,
+.ns-yt-shorts ytm-rich-shelf-renderer,
+.ns-yt-shorts ytm-reel-item-renderer,
+.ns-yt-shorts .ytm-reel-shelf-renderer,
+.ns-yt-shorts .ytm-rich-shelf-renderer,
+.ns-yt-shorts .ytm-reel-item-renderer,
+.ns-yt-shorts .reel-shelf-header,
+.ns-yt-shorts .reel-shelf-header-view-model,
+.ns-yt-shorts .ytm-carousel-header-view-model,
+.ns-yt-shorts ytm-carousel-header-view-model,
+.ns-yt-shorts .ytm-item-section-renderer:has(ytm-reel-shelf-renderer),
+.ns-yt-shorts .ytm-item-section-renderer:has(.reel-shelf-header),
+.ns-yt-shorts .ytm-item-section-renderer:has([aria-label*="Shorts"]),
+.ns-yt-shorts .ytm-item-section-renderer:has([aria-label*="쇼츠"]),
+.ns-yt-shorts ytm-pivot-bar-item-renderer:nth-child(2),
+.ns-yt-shorts [tab-identifier="FEshorts"],
+.ns-yt-shorts [data-content-type="shorts"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+}
+
+/* 2. ALGORITHM (HOME & RELATED) */
+.ns-yt-algorithm ytm-browse[page-subtype="home"] ytm-section-list-renderer,
+.ns-yt-algorithm ytm-browse[page-subtype="home"] ytm-rich-grid-renderer,
+.ns-yt-algorithm ytm-browse[page-subtype="home"] #content ytm-section-list-renderer,
+.ns-yt-algorithm ytm-item-section-renderer[section-identifier="related-items"],
+.ns-yt-algorithm ytm-compact-video-renderer,
+.ns-yt-algorithm ytm-video-with-context-renderer,
+.ns-yt-algorithm .ytm-compact-video-renderer,
+.ns-yt-algorithm .ytm-video-with-context-renderer,
+.ns-yt-algorithm ytm-rich-section-renderer {
+    display: none !important;
+}
+
+/* 3. PLAYLISTS */
+.ns-yt-playlists ytm-playlist-renderer,
+.ns-yt-playlists ytm-compact-playlist-renderer,
+.ns-yt-playlists [href*="list="] {
+    display: none !important;
+}
+
+/* 4. COMMENTS */
+.ns-yt-comments ytm-comments-entry-point-header-renderer,
+.ns-yt-comments #comments,
+.ns-yt-comments .ytm-comments-entry-point-header-renderer,
+.ns-yt-comments [aria-label*="댓글"],
+.ns-yt-comments [aria-label*="Comment"] {
+    display: none !important;
+}
+
+/* 5. BLUR */
+.ns-yt-blur-thumbnails img {
+    filter: blur(20px) !important;
+}

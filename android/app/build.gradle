@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace 'com.stopwaste.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.stopwaste.app"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // 멀티 앱 빌드 설정 (Flavors)
+    flavorDimensions = ["service"]
+    productFlavors {
+        youtube {
+            dimension "service"
+            applicationId "com.stopwaste.youtube"
+            resValue "string", "app_name", "StopWaste for YouTube"
+        }
+        instagram {
+            dimension "service"
+            applicationId "com.stopwaste.instagram"
+            resValue "string", "app_name", "StopWaste for Instagram"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+}
