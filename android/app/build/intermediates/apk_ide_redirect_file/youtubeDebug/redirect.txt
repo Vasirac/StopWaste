@@ -1,2 +1,0 @@
-#- File Locator -
-listingFile=../../apk/youtube/debug/output-metadata.json
