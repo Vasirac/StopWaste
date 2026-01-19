@@ -1,47 +1,32 @@
-/* --- YouTube Mobile CSS (Ultra Nuke) --- */
+/* --- YouTube Mobile Core CSS --- */
 
-/* 1. SHORTS - FULL NUKE */
-.ns-yt-shorts [href*="/shorts/"],
-.ns-yt-shorts [aria-label*="Shorts"],
-.ns-yt-shorts [aria-label*="쇼츠"],
-.ns-yt-shorts ytm-reel-shelf-renderer,
-.ns-yt-shorts ytm-rich-shelf-renderer,
-.ns-yt-shorts ytm-reel-item-renderer,
-.ns-yt-shorts .ytm-reel-shelf-renderer,
-.ns-yt-shorts .ytm-rich-shelf-renderer,
-.ns-yt-shorts .ytm-reel-item-renderer,
-.ns-yt-shorts .reel-shelf-header,
-.ns-yt-shorts .reel-shelf-header-view-model,
-.ns-yt-shorts .ytm-carousel-header-view-model,
-.ns-yt-shorts ytm-carousel-header-view-model,
-.ns-yt-shorts .ytm-item-section-renderer:has(ytm-reel-shelf-renderer),
-.ns-yt-shorts .ytm-item-section-renderer:has(.reel-shelf-header),
-.ns-yt-shorts .ytm-item-section-renderer:has([aria-label*="Shorts"]),
-.ns-yt-shorts .ytm-item-section-renderer:has([aria-label*="쇼츠"]),
+/* 1. SHORTS BLOCK */
+/* 하단 쇼츠 탭 제거 */
 .ns-yt-shorts ytm-pivot-bar-item-renderer:nth-child(2),
-.ns-yt-shorts [tab-identifier="FEshorts"],
-.ns-yt-shorts [data-content-type="shorts"] {
+.ns-yt-shorts [tab-identifier="FEshorts"] {
     display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    position: absolute !important;
-    left: -9999px !important;
 }
 
-/* 2. ALGORITHM (HOME & RELATED) */
+/* 쇼츠 전용 섹션(선반) 제거 */
+.ns-yt-shorts ytm-reel-shelf-renderer,
+.ns-yt-shorts .ytm-reel-shelf-renderer,
+.ns-yt-shorts ytm-shorts-lockup-view-model,
+.ns-yt-shorts [section-identifier="shorts-shelf"] {
+    display: none !important;
+}
+
+/* 개별 쇼츠 링크 차단 (이미지/텍스트 클릭 방지) */
+.ns-yt-shorts [href*="/shorts/"] {
+    pointer-events: none !important;
+}
+
+/* 2. ALGO BLOCK (HOME & RELATED) */
 .ns-yt-algorithm ytm-browse[page-subtype="home"] ytm-section-list-renderer,
 .ns-yt-algorithm ytm-browse[page-subtype="home"] ytm-rich-grid-renderer,
 .ns-yt-algorithm ytm-browse[page-subtype="home"] #content ytm-section-list-renderer,
 .ns-yt-algorithm ytm-item-section-renderer[section-identifier="related-items"],
 .ns-yt-algorithm ytm-compact-video-renderer,
 .ns-yt-algorithm ytm-video-with-context-renderer,
-.ns-yt-algorithm .ytm-compact-video-renderer,
-.ns-yt-algorithm .ytm-video-with-context-renderer,
 .ns-yt-algorithm ytm-rich-section-renderer {
     display: none !important;
 }
@@ -53,16 +38,28 @@
     display: none !important;
 }
 
-/* 4. COMMENTS */
-.ns-yt-comments ytm-comments-entry-point-header-renderer,
-.ns-yt-comments #comments,
-.ns-yt-comments .ytm-comments-entry-point-header-renderer,
-.ns-yt-comments [aria-label*="댓글"],
-.ns-yt-comments [aria-label*="Comment"] {
+/* 4. HISTORY (My Page) */
+.ns-yt-history ytm-item-section-renderer:has(h2:contains("기록")),
+.ns-yt-history ytm-item-section-renderer:has(h3:contains("기록")),
+.ns-yt-history ytm-item-section-renderer:has(h2:contains("History")),
+.ns-yt-history ytm-item-section-renderer:has(h3:contains("History")) {
     display: none !important;
 }
 
-/* 5. BLUR */
+/* 5. COMMENTS */
+.ns-yt-comments ytm-comments-entry-point-header-renderer,
+.ns-yt-comments #comments,
+.ns-yt-comments .ytm-comments-entry-point-header-renderer,
+.ns-yt-comments ytm-comment-teaser-renderer,
+.ns-yt-comments .ytm-comment-teaser-renderer,
+.ns-yt-comments [aria-label*="댓글"],
+.ns-yt-comments [aria-label*="Comment"],
+.ns-yt-comments ytm-item-section-renderer:has(ytm-comments-entry-point-header-renderer),
+.ns-yt-comments ytm-item-section-renderer:has(ytm-comment-teaser-renderer) {
+    display: none !important;
+}
+
+/* 5. THUMBNAIL BLUR */
 .ns-yt-blur-thumbnails img {
     filter: blur(20px) !important;
 }
