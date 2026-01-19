@@ -30,6 +30,7 @@ const defaultOptions = {
     yt_hideSubs: false,
     yt_hideYou: false,
     yt_hideExplore: false,
+    yt_hideExtraMenu: false,
     yt_hard_block_enabled: false,
     yt_hard_block_start: "09:00",
     yt_hard_block_end: "18:00",
@@ -81,6 +82,7 @@ const i18nData = {
         "optHideSubs": "Hide Subscriptions",
         "optHideYou": "Hide 'You' Section",
         "optHideExplore": "Hide Explore",
+        "optHideExtraMenu": "Clean Account Menu (Videos, Movies, etc.)",
         "secReminder": "🔔 Reminder",
         "optEnableReminder": "Soft Reminders",
         "optReminderInterval": "Interval",
@@ -131,6 +133,7 @@ const i18nData = {
         "optHideSubs": "구독 숨기기",
         "optHideYou": "내 페이지 숨기기",
         "optHideExplore": "탐색 숨기기",
+        "optHideExtraMenu": "내 페이지 항목 정리(내 동영상, 내 영화 등)",
         "secReminder": "🔔 리마인더",
         "optEnableReminder": "소프트 리마인더 활성화",
         "optReminderInterval": "알림 간격",
@@ -181,6 +184,7 @@ const i18nData = {
         "optHideSubs": "サブスクリプションを隠す",
         "optHideYou": "「あなた」セクションを隠す",
         "optHideExplore": "探索を隠す",
+        "optHideExtraMenu": "「あなた」の項目をクリーンアップ（動画、映画など）",
         "secReminder": "🔔 ️リマインダー",
         "optEnableReminder": "ソフトリマインダーを有効にする",
         "optReminderInterval": "通知間隔",
@@ -231,6 +235,7 @@ const i18nData = {
         "optHideSubs": "隐藏订阅",
         "optHideYou": "隐藏“你”部分",
         "optHideExplore": "隐藏探索",
+        "optHideExtraMenu": "清理帐户菜单（视频、电影等）",
         "secReminder": "🔔 提醒",
         "optEnableReminder": "开启软提醒",
         "optReminderInterval": "提醒间隔",
@@ -281,6 +286,7 @@ const i18nData = {
         "optHideSubs": "सदस्यता छिपाएं",
         "optHideYou": "'आपका' अनुभाग छिपाएं",
         "optHideExplore": "एक्सप्लोर छिपाएं",
+        "optHideExtraMenu": "खाता मेनू साफ करें (वीडियो, फिल्में, आदि)",
         "secReminder": "🔔 रिमाइंडर",
         "optEnableReminder": "सॉफ्ट रिमाइंडर सक्षम करें",
         "optReminderInterval": "अंतराल",
@@ -389,6 +395,7 @@ function updateTexts(locale) {
     setLabel('yt_hideSubs', texts.optHideSubs);
     setLabel('yt_hideYou', texts.optHideYou);
     setLabel('yt_hideExplore', texts.optHideExplore);
+    setLabel('yt_hideExtraMenu', texts.optHideExtraMenu);
 
     // Hard Block Section
     const hardBlockTitle = document.querySelector('.yt-hardblock-title');

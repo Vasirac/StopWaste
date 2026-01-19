@@ -1,0 +1,342 @@
+:root {
+    --y2k-pink: #ff99cc;
+    --y2k-pink-dark: #ff66aa;
+    --y2k-blue: #99e6ff;
+    --y2k-blue-dark: #44ccff;
+    --y2k-silver: #c0c0c0;
+    --chrome-silver: linear-gradient(180deg, #d8d8d8 0%, #ffffff 45%, #909090 55%, #b0b0b0 100%);
+    --font-bubbly: 'Syne', sans-serif;
+    --font-main: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.y2k-pop {
+    font-family: var(--font-main);
+    background: #fff;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, #fffbf2 0%, #fff 100%);
+    z-index: -2;
+}
+
+/* Header */
+.y2k-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border-bottom: 3px solid var(--y2k-pink);
+    z-index: 1000;
+}
+
+.containerHeader {
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--font-bubbly);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--y2k-pink-dark);
+    text-shadow: 2px 2px #fff, 4px 4px var(--y2k-blue);
+    letter-spacing: -1px;
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    align-items: center;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--y2k-pink-dark);
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 100vh;
+    padding-top: 70px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #fff 0%, #f0faff 100%);
+    overflow: hidden;
+}
+
+.hero-bg-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(50px);
+    opacity: 0.4;
+    animation: floatShape 15s infinite ease-in-out;
+}
+
+.s-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--y2k-pink);
+    top: -100px;
+    right: -100px;
+}
+
+.s-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--y2k-blue);
+    bottom: -50px;
+    left: -50px;
+    animation-delay: -5s;
+}
+
+.s-3 {
+    width: 250px;
+    height: 250px;
+    background: #ffe680;
+    top: 40%;
+    left: 10%;
+    animation-delay: -2s;
+}
+
+@keyframes floatShape {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(30px, -30px);
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.hero h1 {
+    font-family: var(--font-bubbly);
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 0.9;
+    color: #222;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    display: block;
+    color: var(--y2k-pink-dark);
+    text-shadow: 4px 4px var(--y2k-blue);
+}
+
+.hero-desc {
+    font-size: 1.25rem;
+    color: #666;
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+/* Bubbly / Jelly Buttons */
+.btn-jelly,
+.btn-jelly-sm {
+    background: linear-gradient(180deg, #ffccf2 0%, #ff80df 100%);
+    color: white;
+    text-decoration: none;
+    font-weight: 800;
+    border-radius: 50px;
+    border: 3px solid #fff;
+    box-shadow: 0 10px 0 var(--y2k-pink-dark), 0 15px 30px rgba(255, 102, 170, 0.3);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+}
+
+.btn-jelly {
+    padding: 18px 45px;
+    font-size: 1.1rem;
+}
+
+.btn-jelly-sm {
+    padding: 10px 24px;
+    font-size: 0.85rem;
+}
+
+.btn-jelly:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 0 var(--y2k-pink-dark), 0 20px 40px rgba(255, 102, 170, 0.4);
+}
+
+.btn-jelly:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 var(--y2k-pink-dark);
+}
+
+.btn-silver-pill {
+    padding: 18px 45px;
+    background: var(--chrome-silver);
+    color: #333;
+    text-decoration: none;
+    font-weight: 800;
+    border-radius: 50px;
+    border: 2px solid #fff;
+    margin-left: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+/* Cat Sticker Placeholder */
+.cat-sticker-container {
+    position: absolute;
+    right: 5%;
+    bottom: 15%;
+    z-index: 3;
+    transform: rotate(10deg);
+}
+
+.cat-placeholder {
+    width: 250px;
+    height: 250px;
+    background: #fff;
+    border: 8px solid #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-bubbly);
+    font-weight: 800;
+    color: var(--y2k-pink-dark);
+    text-align: center;
+}
+
+/* Pop Cards */
+.features {
+    padding: 100px 0;
+    background: #fffafa;
+}
+
+.pop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.pop-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 35px;
+    border: 4px solid var(--y2k-blue);
+    box-shadow: 0 15px 0 var(--y2k-blue), 0 25px 50px rgba(153, 230, 255, 0.2);
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.pop-card:hover {
+    transform: scale(1.05);
+}
+
+.card-sparkle {
+    font-size: 3rem;
+    color: var(--y2k-pink);
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 153, 204, 0.5);
+}
+
+.pop-card h3 {
+    font-family: var(--font-bubbly);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.pop-card p {
+    color: #777;
+    line-height: 1.6;
+}
+
+/* Footer */
+.y2k-footer {
+    padding: 60px 0;
+    background: #fff;
+    border-top: 4px dotted var(--y2k-blue);
+    text-align: center;
+}
+
+.y2k-footer p {
+    font-family: var(--font-bubbly);
+    font-weight: 800;
+    color: #bbb;
+    font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .pop-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 4rem;
+    }
+
+    .cat-sticker-container {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .pop-grid {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .hero {
+        text-align: center;
+    }
+
+    .btn-silver-pill {
+        margin-left: 0;
+        margin-top: 15px;
+        display: block;
+    }
+}

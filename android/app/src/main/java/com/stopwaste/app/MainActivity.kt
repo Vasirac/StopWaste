@@ -90,8 +90,8 @@ class MainActivity : AppCompatActivity() {
             options = arrayOf("메인 피드 숨기기", "사진 게시물 가리기", "동영상 게시물 가리기", "홈 탭 숨기기", "탐색 탭 숨기기", "릴스 숨기기", "스토리 숨기기", "숫자 숨기기 (팔로워 등)", "흑백 모드", "사이드바/추천 숨기기")
             keys = arrayOf("ig_hideFeed", "ig_hidePhotos", "ig_hideVideos", "ig_hideHome", "ig_hideExplore", "ig_hideReels", "ig_hideStories", "ig_hideNumbers", "ig_grayscale", "ig_hideSidebar")
         } else {
-            options = arrayOf("쇼츠 차단", "알고리즘 숨기기 (홈/추천)", "시청 기록 숨기기", "재생목록 숨기기", "댓글 숨기기", "썸네일 블러")
-            keys = arrayOf("yt_hideShorts", "yt_hideAlgorithm", "yt_hideHistory", "yt_hidePlaylists", "yt_hideComments", "yt_blurThumbnails")
+            options = arrayOf("쇼츠 차단", "알고리즘 숨기기 (홈/추천)", "시청 기록 숨기기", "재생목록 숨기기", "댓글 숨기기", "썸네일 블러", "추가 메뉴 숨기기 (내 동영상 등)")
+            keys = arrayOf("yt_hideShorts", "yt_hideAlgorithm", "yt_hideHistory", "yt_hidePlaylists", "yt_hideComments", "yt_blurThumbnails", "yt_hideExtraMenu")
         }
 
         val checkedItems = BooleanArray(options.size) { i -> config.optBoolean(keys[i], false) }
@@ -162,7 +162,8 @@ class MainActivity : AppCompatActivity() {
                                 'ns-yt-history': config.yt_hideHistory === true,
                                 'ns-yt-playlists': config.yt_hidePlaylists === true,
                                 'ns-yt-comments': config.yt_hideComments !== false,
-                                'ns-yt-blur-thumbnails': config.yt_blurThumbnails === true
+                                'ns-yt-blur-thumbnails': config.yt_blurThumbnails === true,
+                                'ns-yt-extra-menu': config.yt_hideExtraMenu === true
                             };
                         }
                         
@@ -225,27 +226,81 @@ class MainActivity : AppCompatActivity() {
                                 });
                             }
 
-                            // 5. PLAYLIST HIDING (Text-based)
-                            if (config.yt_hidePlaylists === true) {
-                                var playlistSections = document.querySelectorAll('ytm-item-section-renderer, .ytm-item-section-renderer, ytm-rich-section-renderer');
-                                playlistSections.forEach(function(sec) {
-                                    if (sec.style.display === 'none') return;
-                                    var header = sec.querySelector('.ytm-section-header-renderer, h2, h3, .reel-shelf-header');
-                                    if (header && (header.textContent.indexOf('재생목록') !== -1 || header.textContent.toLowerCase().indexOf('playlist') !== -1)) {
-                                        sec.style.display = 'none';
+                            // 6. HISTORY HIDING (Aggressive Text-based)
+                            if (config.yt_hideHistory === true) {
+                                var historyHeaders = document.querySelectorAll('h2, h3, .ytm-section-header-renderer, .reel-shelf-header-view-model');
+                                historyHeaders.forEach(function(h) {
+                                    if (h.textContent.indexOf('기록') !== -1 || h.textContent.toLowerCase().indexOf('history') !== -1) {
+                                        var section = h.closest('ytm-item-section-renderer, .ytm-item-section-renderer, ytm-rich-section-renderer');
+                                        if (section) section.style.display = 'none';
+                                    }
+                                });
+                            } else {
+                                // Restore History
+                                var historyHeaders = document.querySelectorAll('h2, h3, .ytm-section-header-renderer, .reel-shelf-header-view-model');
+                                historyHeaders.forEach(function(h) {
+                                    if (h.textContent.indexOf('기록') !== -1 || h.textContent.toLowerCase().indexOf('history') !== -1) {
+                                        var section = h.closest('ytm-item-section-renderer, .ytm-item-section-renderer, ytm-rich-section-renderer');
+                                        if (section && section.style.display === 'none') section.style.display = '';
                                     }
                                 });
                             }
 
-                            // 6. HISTORY HIDING (Text-based)
-                            if (config.yt_hideHistory === true) {
-                                var historySections = document.querySelectorAll('ytm-item-section-renderer, .ytm-item-section-renderer, ytm-rich-section-renderer');
-                                historySections.forEach(function(sec) {
-                                    if (sec.style.display === 'none') return;
-                                    var header = sec.querySelector('.ytm-section-header-renderer, h2, h3, .reel-shelf-header');
-                                    if (header && (header.textContent.indexOf('기록') !== -1 || header.textContent.toLowerCase().indexOf('history') !== -1)) {
-                                        sec.style.display = 'none';
+                            // 7. PLAYLIST HIDING (Aggressive Text-based)
+                            if (config.yt_hidePlaylists === true) {
+                                var playlistHeaders = document.querySelectorAll('h2, h3, .ytm-section-header-renderer, .reel-shelf-header-view-model');
+                                playlistHeaders.forEach(function(h) {
+                                    if (h.textContent.indexOf('재생목록') !== -1 || h.textContent.toLowerCase().indexOf('playlist') !== -1) {
+                                        var section = h.closest('ytm-item-section-renderer, .ytm-item-section-renderer, ytm-rich-section-renderer');
+                                        if (section) section.style.display = 'none';
                                     }
+                                });
+                            } else {
+                                // Restore Playlists
+                                var playlistHeaders = document.querySelectorAll('h2, h3, .ytm-section-header-renderer, .reel-shelf-header-view-model');
+                                playlistHeaders.forEach(function(h) {
+                                    if (h.textContent.indexOf('재생목록') !== -1 || h.textContent.toLowerCase().indexOf('playlist') !== -1) {
+                                        var section = h.closest('ytm-item-section-renderer, .ytm-item-section-renderer, ytm-rich-section-renderer');
+                                        if (section && section.style.display === 'none') section.style.display = '';
+                                    }
+                                });
+                            }
+
+                            // 8. ACCOUNT MENU HIDING (Your Videos, Your Movies, Feedback)
+                            if (config.yt_hideExtraMenu === true) {
+                                var keywords = ['내 동영상', '내 영화', '의견', '고객센터', 'Your videos', 'Your movies', 'Feedback', 'Help'];
+                                var allLinks = document.querySelectorAll('ytm-compact-link-renderer, .ytm-compact-link-renderer, a');
+                                allLinks.forEach(function(el) {
+                                    var text = el.textContent;
+                                    
+                                    // EXCLUDE: Watch Later and Liked Videos
+                                    if (text.indexOf('나중에 볼 동영상') !== -1 || text.indexOf('좋아요 표시한 동영상') !== -1 || 
+                                        text.indexOf('Watch later') !== -1 || text.indexOf('Liked videos') !== -1) {
+                                        return;
+                                    }
+
+                                    var shouldHide = keywords.some(function(kw) { return text.indexOf(kw) !== -1; });
+                                    
+                                    // Also check icons/hrefs for hidden items
+                                    var href = el.getAttribute('href') || (el.querySelector('a') ? el.querySelector('a').getAttribute('href') : "");
+                                    if (!shouldHide && href) {
+                                        // EXCLUDE Watch Later and Liked lists via href
+                                        if (href.indexOf('list=WL') !== -1 || href.indexOf('list=LL') !== -1) return;
+                                        
+                                        shouldHide = (href.indexOf('/premium') !== -1 || href.indexOf('/purchases') !== -1 || href.indexOf('feedback') !== -1);
+                                    }
+
+                                    if (shouldHide) {
+                                        var box = (el.tagName === 'YTM-COMPACT-LINK-RENDERER') ? el : el.closest('ytm-compact-link-renderer');
+                                        if (box) box.style.display = 'none';
+                                        else el.style.display = 'none';
+                                    }
+                                });
+                            } else {
+                                // Restore Account Menu
+                                var allHidden = document.querySelectorAll('ytm-compact-link-renderer, .ytm-compact-link-renderer, a');
+                                allHidden.forEach(function(el) {
+                                    if (el.style.display === 'none') el.style.display = '';
                                 });
                             }
                         }
@@ -267,7 +322,7 @@ class MainActivity : AppCompatActivity() {
     
     private fun getDefaultConfig(): String {
         return """{
-            "yt_hideShorts":true,"yt_hideAlgorithm":false,"yt_hideHistory":false,"yt_hidePlaylists":false,"yt_hideComments":true,"yt_blurThumbnails":false,
+            "yt_hideShorts":true,"yt_hideAlgorithm":false,"yt_hideHistory":false,"yt_hidePlaylists":false,"yt_hideComments":true,"yt_blurThumbnails":false,"yt_hideExtraMenu":false,
             "ig_hideFeed":true,"ig_hidePhotos":false,"ig_hideVideos":false,"ig_hideHome":false,"ig_hideExplore":true,"ig_hideReels":true,"ig_hideStories":false,"ig_hideNumbers":false,"ig_grayscale":false,"ig_hideSidebar":true
         }""".trimIndent()
     }

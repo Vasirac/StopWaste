@@ -9,7 +9,7 @@ let config = {
     yt_hideShorts: true, yt_blurThumbnails: false, yt_hideHome: true, yt_hideSidebar: true,
     yt_hideHeader: false, yt_hideNotifications: false, yt_hideComments: true, yt_hideRelated: true,
     yt_hidePlaylist: false, yt_hideSubs: false, yt_hideYou: false, yt_hideExplore: false,
-    yt_hideYou: false, yt_hideExplore: false,
+    yt_hideExtraMenu: false,
     yt_hard_block_enabled: false, yt_hard_block_start: "09:00", yt_hard_block_end: "18:00",
     block_yt: true, block_ig: false,
     soft_reminders_enabled: false, soft_reminders_interval: 15
@@ -132,6 +132,7 @@ function applyConfig() {
         'ns-yt-subs': config.yt_hideSubs,
         'ns-yt-you': config.yt_hideYou,
         'ns-yt-explore': config.yt_hideExplore,
+        'ns-yt-extra-menu': config.yt_hideExtraMenu,
         'ns-yt-blur-thumbnails': config.yt_blurThumbnails
     };
 
