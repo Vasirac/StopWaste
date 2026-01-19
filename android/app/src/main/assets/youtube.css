@@ -20,7 +20,17 @@
     pointer-events: none !important;
 }
 
-/* 2. ALGO BLOCK (HOME & RELATED) */
+/* HIDE WEB UI ELEMENTS THAT OVERLAP WITH NATIVE UI */
+ytm-pivot-bar-renderer {
+    display: none !important;
+}
+
+ytm-header-bar .header-bar-button,
+ytm-header-bar .header-bar-search-button {
+    display: none !important;
+}
+
+/* 2. HIDE ALGORITHM & FEED (Aggressive) */
 .ns-yt-algorithm ytm-browse[page-subtype="home"] ytm-section-list-renderer,
 .ns-yt-algorithm ytm-browse[page-subtype="home"] ytm-rich-grid-renderer,
 .ns-yt-algorithm ytm-browse[page-subtype="home"] #content ytm-section-list-renderer,

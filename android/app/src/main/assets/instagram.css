@@ -1,7 +1,13 @@
-/* 1. Hide Main Feed (Whole) - 아예 안 보이게 함 */
-html.ns-ig-feed article {
+/* HIDE WEB UI ELEMENTS THAT OVERLAP WITH NATIVE UI */
+[role="navigation"] div:has(> [aria-label="Home"]),
+[role="navigation"] div:has(> [aria-label="홈"]),
+footer[role="contentinfo"],
+.xat24cr.x1n2onr6.x1u3v193,
+div[style*="height: 48px"] {
+    /* Common mobile nav bar height */
     display: none !important;
 }
+
 
 /* 2. Remove Feed Photos (Photo 전용 가림) */
 html.ns-ig-photos article:not(:has(video)) {

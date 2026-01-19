@@ -10,6 +10,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,16 +21,30 @@ class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var prefs: SharedPreferences
     private lateinit var fabSettings: FloatingActionButton
+    private lateinit var bottomNav: com.google.android.material.bottomnavigation.BottomNavigationView
     private val TAG = "StopWaste"
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Enable Edge-to-Edge design
+        enableEdgeToEdge()
+        
         setContentView(R.layout.activity_main)
+
+        // Adjust view padding for system bars (status bar, nav bar)
+        val mainLayout = findViewById<android.view.View>(android.R.id.content)
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(mainLayout) { v, insets ->
+            val systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         prefs = getSharedPreferences("stopwaste_prefs", Context.MODE_PRIVATE)
         webView = findViewById(R.id.webView)
         fabSettings = findViewById(R.id.fabSettings)
+        bottomNav = findViewById(R.id.bottomNav)
         
         WebView.setWebContentsDebuggingEnabled(true)
 
@@ -51,6 +66,7 @@ class MainActivity : AppCompatActivity() {
             override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
                 super.doUpdateVisitedHistory(view, url, isReload)
                 injectAll()
+                updateBottomNavSelection(url)
             }
         }
         
@@ -58,6 +74,32 @@ class MainActivity : AppCompatActivity() {
 
         fabSettings.setOnClickListener {
             showSettingsDialog()
+        }
+
+        bottomNav.setOnItemSelectedListener { item ->
+            val isYoutube = packageName.contains("youtube")
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    if (isYoutube) webView.loadUrl("https://m.youtube.com")
+                    else webView.loadUrl("https://www.instagram.com")
+                    true
+                }
+                R.id.nav_subs -> {
+                    if (isYoutube) webView.loadUrl("https://m.youtube.com/feed/subscriptions")
+                    else webView.loadUrl("https://www.instagram.com/explore/")
+                    true
+                }
+                R.id.nav_library -> {
+                    if (isYoutube) webView.loadUrl("https://m.youtube.com/feed/library")
+                    else webView.loadUrl("https://www.instagram.com/reels/")
+                    true
+                }
+                R.id.nav_settings -> {
+                    showSettingsDialog()
+                    false // Don't highlight settings tab
+                }
+                else -> false
+            }
         }
 
         val packageName = packageName
@@ -78,6 +120,29 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun updateBottomNavSelection(url: String?) {
+        if (url == null) return
+        val isYoutube = packageName.contains("youtube")
+        
+        try {
+            if (isYoutube) {
+                when {
+                    url.endsWith("m.youtube.com/") || url.contains("m.youtube.com/?") -> bottomNav.menu.findItem(R.id.nav_home).isChecked = true
+                    url.contains("/feed/subscriptions") -> bottomNav.menu.findItem(R.id.nav_subs).isChecked = true
+                    url.contains("/feed/library") || url.contains("/feed/you") -> bottomNav.menu.findItem(R.id.nav_library).isChecked = true
+                }
+            } else {
+                when {
+                    url.endsWith("instagram.com/") -> bottomNav.menu.findItem(R.id.nav_home).isChecked = true
+                    url.contains("/explore/") -> bottomNav.menu.findItem(R.id.nav_subs).isChecked = true
+                    url.contains("/reels/") -> bottomNav.menu.findItem(R.id.nav_library).isChecked = true
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Update nav error", e)
+        }
+    }
+
     private fun showSettingsDialog() {
         val configStr = prefs.getString("config", getDefaultConfig()) ?: getDefaultConfig()
         val config = JSONObject(configStr)
@@ -96,8 +161,9 @@ class MainActivity : AppCompatActivity() {
 
         val checkedItems = BooleanArray(options.size) { i -> config.optBoolean(keys[i], false) }
 
+        // TODO: Replace with modern BottomSheetDialogFragment
         AlertDialog.Builder(this)
-            .setTitle("\uD83D\uDEE1\uFE0F StopWaste 설정")
+            .setTitle("🛡️ StopWaste 설정")
             .setMultiChoiceItems(options, checkedItems) { _, which, isChecked ->
                 checkedItems[which] = isChecked
             }
