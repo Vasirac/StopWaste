@@ -52,6 +52,23 @@
 
 ---
 
+## 📱 Mobile App (Flutter)
+Available for Android (and iOS in the future).
+
+### 🛠 How to Run / 빌드 및 실행 방법
+1. **Prerequisites:** Flutter SDK installed.
+2. **Setup:** `flutter pub get`
+3. **Run YouTube Flavor:**
+   ```bash
+   flutter run --flavor youtube
+   ```
+4. **Run Instagram Flavor:**
+   ```bash
+   flutter run --flavor instagram
+   ```
+
+---
+
 ## 📝 License
 This project is open-source and available for personal modification.
 이 프로젝트는 오픈 소스이며 자유롭게 수정하여 사용할 수 있습니다.

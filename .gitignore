@@ -30,3 +30,40 @@ local.properties
 **/local-state/
 last-build.bin
 build-history.bin
+
+# Flutter-related
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/pubspec_overrides.yaml
+**/.web_assets_cache/
+**/.metadata
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio thumbnails
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/libraries/
+android/**/gradle-wrapper.jar
+**/android/app/src/main/res/values/styles.xml
+
+# iOS related
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.[mh]
+**/ios/Runner/GeneratedPluginRegistrant.swift
+**/ios/Podfile.lock
+
+# Windows/Linux/MacOS related
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
+**/macos/Flutter/ephemeral/
