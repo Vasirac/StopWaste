@@ -195,6 +195,12 @@
       border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
+    input[type="checkbox"]:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
     input[type="checkbox"]::after {
       content: '';
       position: absolute;
@@ -230,6 +236,135 @@
       opacity: 1;
       /* Faintly visible when triggered */
     }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: linear-gradient(to bottom, #121212 0%, #1e1e1e 100%);
+      color: #ffffff;
+      /* Pure white for better contrast */
+    }
+
+    body.dark-mode header {
+      background: rgba(18, 18, 18, 0.98);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .platform-section,
+    body.dark-mode .common-section {
+      background: rgba(30, 30, 30, 0.85);
+      /* Slightly more opaque */
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+    }
+
+    body.dark-mode .section-title {
+      color: #cccccc;
+      /* Much brighter gray */
+      border-bottom-color: rgba(255, 255, 255, 0.2);
+    }
+
+    body.dark-mode .sub-title {
+      color: #aaaaaa;
+      /* Brighter gray */
+    }
+
+    body.dark-mode label {
+      color: #ffffff;
+    }
+
+    body.dark-mode label span {
+      color: #eeeeee;
+      /* Almost white */
+    }
+
+    body.dark-mode input[type="text"] {
+      background: rgba(60, 60, 60, 0.9) !important;
+      color: #fff !important;
+      border: 1px solid #777 !important;
+    }
+
+    body.dark-mode .locale-container select {
+      background: rgba(60, 60, 60, 0.9);
+      border-color: #777;
+      color: #fff;
+    }
+
+    /* Specific adjustments for colored titles in Dark Mode */
+    body.dark-mode .yt-title {
+      color: #ff6b6b;
+      /* Lighter red for dark bg */
+    }
+
+    body.dark-mode .ig-title {
+      color: #ff85a1;
+      /* Lighter pink for dark bg */
+    }
+
+    body.dark-mode ::-webkit-scrollbar-track {
+      background: #121212;
+    }
+
+    body.dark-mode ::-webkit-scrollbar-thumb {
+      background: #555;
+    }
+
+    body.dark-mode ::-webkit-scrollbar-thumb:hover {
+      background: #777;
+    }
+
+    /* Dark Mode: Special Section Adjustments */
+    body.dark-mode .strict-section {
+      background: rgba(80, 20, 20, 0.25) !important;
+      /* Darker Red */
+      border: 1px solid rgba(255, 82, 82, 0.4) !important;
+    }
+
+    body.dark-mode .reminder-section {
+      background: rgba(20, 60, 20, 0.25) !important;
+      /* Darker Green */
+      border: 1px solid rgba(76, 175, 80, 0.4) !important;
+    }
+
+    body.dark-mode .usage-limit-section {
+      background: rgba(20, 40, 80, 0.25) !important;
+      /* Darker Blue */
+      border: 1px solid rgba(33, 150, 243, 0.4) !important;
+    }
+
+    body.dark-mode .section-header {
+      color: #ffffff !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    body.dark-mode .strict-section label,
+    body.dark-mode .reminder-section label,
+    body.dark-mode .usage-limit-section label {
+      color: #ddd !important;
+    }
+
+    body.dark-mode .description {
+      color: #bbb !important;
+    }
+
+    /* Dark Mode Toggle Button */
+    .dark-mode-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2em;
+      padding: 0;
+      margin-right: 15px;
+      transition: transform 0.2s;
+      vertical-align: middle;
+      opacity: 0.8;
+      filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+      /* Glow effect */
+    }
+
+    .dark-mode-toggle:hover {
+      transform: scale(1.1);
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -240,13 +375,14 @@
       <span class="header-title">StopWaste</span>
     </div>
     <div class="locale-container">
+      <button id="toggleDarkMode" class="dark-mode-toggle" title="Toggle Dark Mode">🌙</button>
       <select id="userLocale">
-        <option value="auto" style="color: black;">Auto (System)</option>
-        <option value="en" style="color: black;">English</option>
-        <option value="ko" style="color: black;">한국어</option>
-        <option value="ja" style="color: black;">日本語</option>
-        <option value="zh_CN" style="color: black;">中文</option>
-        <option value="hi" style="color: black;">히न्दी</option>
+        <option value="auto">Auto</option>
+        <option value="ko">한국어</option>
+        <option value="en">English</option>
+        <option value="ja">日本語</option>
+        <option value="zh_CN">简体中文</option>
+        <option value="hi">हिन्दी</option>
       </select>
     </div>
   </header>
@@ -288,10 +424,44 @@
       </div>
     </div>
 
+    <div class="usage-limit-section"
+      style="margin-bottom: 12px; background: rgba(240, 248, 255, 0.65); backdrop-filter: blur(12px); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(0, 123, 255, 0.15); box-shadow: 0 4px 12px rgba(0, 123, 255, 0.05);">
+      <div class="section-title usage-limit-title" style="color: #007BFF;">⏳ Usage Time Limit</div>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <label style="margin: 0; flex: 1;">
+          <span class="optEnableUsageLimit">Enable Time Limit</span>
+          <input type="checkbox" id="usage_limit_enabled">
+        </label>
+      </div>
+      <div id="usage_limit_minutes_row" style="margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+          <span class="optUsageLimitMinutes" style="font-size: 0.85em; font-weight: 500;">Limit (Minutes)</span>
+          <span id="usage-limit-label" style="font-size: 0.85em; font-weight: 700; color: #007BFF;">30m</span>
+        </div>
+        <input type="range" id="usage_limit_minutes" min="5" max="180" step="5"
+          style="width: 100%; cursor: pointer; accent-color: #007BFF;">
+      </div>
+      <div id="block_after_timer_row"
+        style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+        <label style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: space-between;">
+          <span class="optBlockAfterTimer" style="font-size: 0.9em; font-weight: 500;">Block Site After Timer</span>
+          <input type="checkbox" id="block_after_timer">
+        </label>
+      </div>
+    </div>
+
+
+
     <div class="sections-wrapper">
       <!-- Instagram Settings -->
       <div class="platform-section">
         <div class="section-title ig-title">📸 Instagram</div>
+
+        <label
+          style="background: linear-gradient(135deg, #ff6b6b, #ee5a5a); border-radius: 8px; padding: 8px 12px; margin-bottom: 10px;">
+          <span class="optBlockIGNow" style="color: white; font-weight: 600;">🚫 Block Instagram Now</span>
+          <input type="checkbox" id="ig_block_now">
+        </label>
 
         <div class="sub-title">Block & Redirect</div>
         <label>
@@ -355,6 +525,12 @@
       <!-- YouTube Settings -->
       <div class="platform-section yt-section">
         <div class="section-title yt-title">📺 YouTube</div>
+
+        <label
+          style="background: linear-gradient(135deg, #ff6b6b, #ee5a5a); border-radius: 8px; padding: 8px 12px; margin-bottom: 10px;">
+          <span class="optBlockYTNow" style="color: white; font-weight: 600;">🚫 Block YouTube Now</span>
+          <input type="checkbox" id="yt_block_now">
+        </label>
 
         <div class="sub-title">Block & Redirect</div>
         <label>

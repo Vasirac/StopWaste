@@ -1,10 +1,14 @@
 /* global chrome */
+console.log('[StopWaste] options.js loaded at ' + new Date().toLocaleTimeString());
+
 const defaultOptions = {
     // Strict Mode
     strict_mode: false,
 
     // Instagram
+    ig_block_now: false,
     ig_hideReelsPage: true,
+
     ig_redirectUrl: "/direct/inbox/",
     ig_hideVideos: true,
     ig_hidePhotos: false, // 기본값 False (새 기능)
@@ -18,7 +22,9 @@ const defaultOptions = {
     ig_grayscaleMode: false,
 
     // YouTube
+    yt_block_now: false,
     yt_hideShorts: true,
+
     yt_blurThumbnails: false,
     yt_hideHome: true,
     yt_hideSidebar: true,
@@ -37,13 +43,23 @@ const defaultOptions = {
     block_yt: true,
     block_ig: false,
 
+
+
     // Reminder
     soft_reminders_enabled: false,
     soft_reminders_interval: 15,
 
+    // Usage Limit
+    usage_limit_enabled: false,
+    usage_limit_minutes: 30,
+    block_after_timer: false,
+
     // Language
-    userLocale: "auto"
+
+    userLocale: "auto",
+    darkMode: false
 };
+
 
 const i18nData = {
     "en": {
@@ -54,7 +70,9 @@ const i18nData = {
         "msgWait": "Wait {n}s...",
         "msgUnlock": "Unlocked",
         "secIG": "📸 Instagram",
+        "optBlockIGNow": "🚫 Block Instagram Now",
         "secBlock": "Block & Redirect",
+
         "optRedirect": "Redirect Reels/Explore",
         "descRedirect": "Redirect Target (e.g. / or /direct/inbox/)",
         "optRemoveVideo": "Remove Feed Videos",
@@ -70,7 +88,10 @@ const i18nData = {
         "optHideNumbers": "Hide Numbers",
         "optGrayscale": "Grayscale Mode",
         "secYT": "📺 YouTube",
+        "optBlockYTNow": "🚫 Block YouTube Now",
         "optBlockShorts": "Block Shorts",
+
+
         "optBlurThumbnails": "Blur Thumbnails",
         "optMinimalHome": "Hide Home Feed",
         "optHideSidebar": "Hide Sidebar",
@@ -93,10 +114,21 @@ const i18nData = {
         "optEndTime": "End Time",
         "optBlockYT": "Apply to YouTube",
         "optBlockIG": "Apply to Instagram",
+        "secUsageLimit": "⏳ Usage Time Limit",
+        "optEnableUsageLimit": "Enable Time Limit",
+        "optUsageLimitMinutes": "Limit (Minutes)",
+        "msgUsageMinutes": "{n} minutes",
+        "msgCountdown": "Time limit in {n}s",
+        "optBlockEntireYT": "Explicit YouTube Block",
+        "optBlockAfterTimer": "Block sites after timer ends",
+        "msgYoutubeBlocked": "YouTube is blocked! touch the grass!",
+
         "msgFocusTime": "It's Focus Time!",
-        "msgTakeABreak": "This site is restricted until {time}",
+
+        "msgTakeABreak": "touch the grass!",
         "statusSaved": "Settings saved automatically"
     },
+
     "ko": {
         "extName": "StopWaste",
         "secStrict": "🔐 엄격 모드",
@@ -105,7 +137,9 @@ const i18nData = {
         "msgWait": "{n}초 대기...",
         "msgUnlock": "해제됨",
         "secIG": "📸 인스타그램",
+        "optBlockIGNow": "🚫 인스타그램 즉시 차단",
         "secBlock": "차단 및 리다이렉트",
+
         "optRedirect": "릴스/탐색 리다이렉트",
         "descRedirect": "리다이렉트 대상 (예: / 또는 /direct/inbox/)",
         "optRemoveVideo": "피드 동영상 제거",
@@ -121,7 +155,9 @@ const i18nData = {
         "optHideNumbers": "숫자 숨기기",
         "optGrayscale": "흑백 모드",
         "secYT": "📺 유튜브",
+        "optBlockYTNow": "🚫 유튜브 즉시 차단",
         "optBlockShorts": "쇼츠 차단",
+
         "optBlurThumbnails": "썸네일 블러 처리",
         "optMinimalHome": "메인화면 알고리즘 숨기기",
         "optHideSidebar": "사이드바 숨기기",
@@ -144,10 +180,21 @@ const i18nData = {
         "optEndTime": "종료 시간",
         "optBlockYT": "유튜브에 적용",
         "optBlockIG": "인스타그램에 적용",
+        "secUsageLimit": "⏳ 사용 시간 제한",
+        "optEnableUsageLimit": "시간 제한 활성화",
+        "optUsageLimitMinutes": "제한 시간(분)",
+        "msgUsageMinutes": "{n}분",
+        "msgCountdown": "{n}초 후 화면 차단",
+        "optBlockEntireYT": "타이머 종료 후 사이트 차단",
+        "optBlockAfterTimer": "타이머 종료 후 사이트 차단",
+        "msgYoutubeBlocked": "유튜브는 차단되었습니다! touch the grass!",
+
         "msgFocusTime": "집중 시간입니다!",
-        "msgTakeABreak": "이 사이트가 {time}까지 제한됩니다",
+
+        "msgTakeABreak": "touch the grass!",
         "statusSaved": "설정이 자동으로 저장되었습니다"
     },
+
     "ja": {
         "extName": "StopWaste",
         "secStrict": "🔐 厳格モード",
@@ -195,10 +242,19 @@ const i18nData = {
         "optEndTime": "終了時間",
         "optBlockYT": "YouTubeに適用",
         "optBlockIG": "Instagramに適用",
+        "secUsageLimit": "⏳ 利用時間制限",
+        "optEnableUsageLimit": "時間制限を有効化",
+        "optUsageLimitMinutes": "制限時間（分）",
+        "msgUsageMinutes": "{n}分",
+        "msgCountdown": "あと{n}秒で画面をブロック",
+        "optBlockYTNow": "🚫 YouTubeを今すぐブロック",
+        "optBlockIGNow": "🚫 Instagramを今すぐブロック",
+        "optBlockAfterTimer": "タイマー終了後にサイトをブロック",
         "msgFocusTime": "集中する時間です！",
-        "msgTakeABreak": "このサイトは{time}まで制限されています",
-        "statusSaved": "設定가자동으로저장되었습니다"
+        "msgTakeABreak": "touch the grass!",
+        "statusSaved": "設定が自動的に保存されました"
     },
+
     "zh_CN": {
         "extName": "StopWaste",
         "secStrict": "🔐 严格模式",
@@ -246,10 +302,19 @@ const i18nData = {
         "optEndTime": "结束时间",
         "optBlockYT": "应用于 YouTube",
         "optBlockIG": "应用于 Instagram",
+        "secUsageLimit": "⏳ 使用时间限制",
+        "optEnableUsageLimit": "启用时间限制",
+        "optUsageLimitMinutes": "限制时间（分钟）",
+        "msgUsageMinutes": "{n}分钟",
+        "msgCountdown": "{n}秒后屏蔽屏幕",
+        "optBlockYTNow": "🚫 立即屏蔽 YouTube",
+        "optBlockIGNow": "🚫 立即屏蔽 Instagram",
+        "optBlockAfterTimer": "计时器结束后屏蔽网站",
         "msgFocusTime": "现在是专注时间！",
-        "msgTakeABreak": "该网站已限制访问，直至 {time}",
+        "msgTakeABreak": "touch the grass!",
         "statusSaved": "设置已自动保存"
     },
+
     "hi": {
         "extName": "StopWaste",
         "secStrict": "🔐 सख्त मोड",
@@ -297,11 +362,20 @@ const i18nData = {
         "optEndTime": "समाप्ति का समय",
         "optBlockYT": "YouTube पर लागू करें",
         "optBlockIG": "Instagram पर लागू करें",
+        "secUsageLimit": "⏳ उपयोग समय सीमा",
+        "optEnableUsageLimit": "समय सीमा सक्षम करें",
+        "optUsageLimitMinutes": "सीमा समय (मिनट)",
+        "msgUsageMinutes": "{n} मिनट",
+        "msgCountdown": "{n} सेकंड में स्क्रीन ब्लॉक",
+        "optBlockYTNow": "🚫 YouTube अभी ब्लॉक करें",
+        "optBlockIGNow": "🚫 Instagram अभी ब्लॉक करें",
+        "optBlockAfterTimer": "टाइमर समाप्त होने पर साइट ब्लॉक करें",
         "msgFocusTime": "यह फोकस समय है!",
-        "msgTakeABreak": "यह साइट {time} तक प्रतिबंधित है",
+        "msgTakeABreak": "touch the grass!",
         "statusSaved": "सेटिंग्स स्वचालित रूप से सहेजी गईं"
     }
 };
+
 
 function getSystemLocale() {
     const lang = navigator.language.replace('-', '_');
@@ -319,6 +393,15 @@ function updateTimerLabel() {
     const texts = i18nData[currentLang] || i18nData['en'];
     document.getElementById('timer-label').textContent = texts.msgReminderEvery.replace("{n}", val);
 }
+
+function updateUsageLimitLabel() {
+    const val = document.getElementById('usage_limit_minutes').value;
+    const locale = document.getElementById('userLocale').value;
+    const currentLang = (locale === 'auto') ? getSystemLocale() : locale;
+    const texts = i18nData[currentLang] || i18nData['en'];
+    document.getElementById('usage-limit-label').textContent = texts.msgUsageMinutes.replace("{n}", val);
+}
+
 
 function updateTexts(locale) {
     if (locale === 'auto') locale = getSystemLocale();
@@ -412,10 +495,34 @@ function updateTexts(locale) {
     document.querySelector('.optReminderInterval').textContent = texts.optReminderInterval;
     updateTimerLabel();
 
+    // Usage Limit Section
+    const usageLimitTitle = document.querySelector('.usage-limit-title');
+    if (usageLimitTitle) usageLimitTitle.textContent = texts.secUsageLimit;
+    const optEnableUsageLimit = document.querySelector('.optEnableUsageLimit');
+    if (optEnableUsageLimit) optEnableUsageLimit.textContent = texts.optEnableUsageLimit;
+    const optUsageLimitMinutes = document.querySelector('.optUsageLimitMinutes');
+    if (optUsageLimitMinutes) optUsageLimitMinutes.textContent = texts.optUsageLimitMinutes;
+    const optBlockEntireYT = document.querySelector('.optBlockEntireYT');
+    if (optBlockEntireYT) optBlockEntireYT.textContent = texts.optBlockEntireYT;
+    const optBlockYTNow = document.querySelector('.optBlockYTNow');
+    if (optBlockYTNow) optBlockYTNow.textContent = texts.optBlockYTNow;
+    const optBlockIGNow = document.querySelector('.optBlockIGNow');
+    if (optBlockIGNow) optBlockIGNow.textContent = texts.optBlockIGNow;
+    updateUsageLimitLabel();
+
+
+
+
 
 
     // Footer
     document.getElementById('status').dataset.savedText = texts.statusSaved;
+}
+
+function updateDarkMode(isDark) {
+    document.body.classList.toggle('dark-mode', isDark);
+    const btn = document.getElementById('toggleDarkMode');
+    if (btn) btn.textContent = isDark ? '☀️' : '🌙';
 }
 
 function saveOptions() {
@@ -435,6 +542,7 @@ function saveOptions() {
 
     // userLocale manually
     options.userLocale = document.getElementById('userLocale').value;
+    options.darkMode = document.body.classList.contains('dark-mode');
 
     chrome.storage.sync.set(options, () => {
         const status = document.getElementById('status');
@@ -483,7 +591,36 @@ function restoreOptions() {
 
         updateTexts(items.userLocale);
         updateLockState(items.strict_mode);
+        updateDarkMode(items.darkMode);
+        handleUsageLimitToggle(); // Initialize state
     });
+}
+
+function handleUsageLimitToggle() {
+    const isEnabled = document.getElementById('usage_limit_enabled').checked;
+    const blockAfterTimer = document.getElementById('block_after_timer');
+    const slider = document.getElementById('usage_limit_minutes');
+    const blockRow = document.getElementById('block_after_timer_row');
+    const sliderRow = document.getElementById('usage_limit_minutes_row');
+
+    // Block After Timer Section
+    if (blockAfterTimer) {
+        blockAfterTimer.disabled = !isEnabled;
+        if (!isEnabled) blockAfterTimer.checked = false;
+    }
+    if (blockRow) {
+        blockRow.style.opacity = isEnabled ? '1' : '0.4';
+        blockRow.style.pointerEvents = isEnabled ? 'auto' : 'none';
+    }
+
+    // Slider Section
+    if (slider) {
+        slider.disabled = !isEnabled;
+    }
+    if (sliderRow) {
+        sliderRow.style.opacity = isEnabled ? '1' : '0.4';
+        sliderRow.style.pointerEvents = isEnabled ? 'auto' : 'none';
+    }
 }
 
 function updateLockState(isLocked) {
@@ -491,6 +628,12 @@ function updateLockState(isLocked) {
     const inputs = document.querySelectorAll('input:not(#strict_mode, #userLocale)');
     inputs.forEach(input => {
         input.disabled = isLocked;
+
+        // SKIP opacity update for usage limit sub-options (they are handled by handleUsageLimitToggle)
+        if (input.id === 'usage_limit_minutes' || input.id === 'block_after_timer') {
+            return;
+        }
+
         if (isLocked) {
             input.parentElement.style.opacity = "0.5";
             input.parentElement.style.pointerEvents = "none";
@@ -563,6 +706,8 @@ function handleStrictToggle(e) {
 }
 
 document.getElementById('soft_reminders_interval').addEventListener('input', updateTimerLabel);
+document.getElementById('usage_limit_minutes').addEventListener('input', updateUsageLimitLabel);
+
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.querySelectorAll('input').forEach(input => {
     if (input.id === 'strict_mode') {
@@ -575,3 +720,25 @@ document.querySelectorAll('input').forEach(input => {
     }
 });
 document.getElementById('userLocale').addEventListener('change', saveOptions);
+document.getElementById('toggleDarkMode').addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark-mode');
+    updateDarkMode(isDark);
+    saveOptions();
+});
+document.getElementById('usage_limit_enabled').addEventListener('change', () => {
+    handleUsageLimitToggle();
+    saveOptions();
+});
+const blockAfterTimerEl = document.getElementById('block_after_timer');
+if (blockAfterTimerEl) {
+    blockAfterTimerEl.addEventListener('change', (e) => {
+        // Enforce dependency: if parent is off, force this off too
+        const parentEnabled = document.getElementById('usage_limit_enabled').checked;
+        if (!parentEnabled) {
+            e.target.checked = false;
+        }
+        saveOptions();
+    });
+}
+
+

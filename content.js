@@ -12,16 +12,24 @@ let config = {
     yt_hideExtraMenu: false,
     yt_hard_block_enabled: false, yt_hard_block_start: "09:00", yt_hard_block_end: "18:00",
     block_yt: true, block_ig: false,
-    soft_reminders_enabled: false, soft_reminders_interval: 15
+    soft_reminders_enabled: false, soft_reminders_interval: 15,
+    usage_limit_enabled: false, usage_limit_minutes: 30,
+    yt_block_now: false, ig_block_now: false, block_after_timer: false,
+    darkMode: false
 };
 
+
+
+
 const i18nContent = {
-    "en": { "focus": "It's Focus Time!", "restrict": "This site is restricted until {time}" },
-    "ko": { "focus": "집중 시간입니다!", "restrict": "이 사이트가 {time}까지 제한됩니다" },
-    "ja": { "focus": "集中する時間です！", "restrict": "このサイトは{time}まで制限されています" },
-    "zh_CN": { "focus": "现在是专注时间！", "restrict": "该网站已限制访问，直至 {time}" },
-    "hi": { "focus": "यह फोकस समय है!", "restrict": "यह 사이트 {time} तक प्रतिबंधित है" }
+    "en": { "focus": "It's Focus Time!", "restrict": "touch the grass!", "countdown": "{n}s remaining", "ytBlocked": "YouTube is blocked! touch the grass!", "igBlocked": "Instagram is blocked! touch the grass!", "timerEnded": "Time's up!" },
+    "ko": { "focus": "집중 시간입니다!", "restrict": "touch the grass!", "countdown": "{n}초 후 화면이 차단됩니다", "ytBlocked": "유튜브는 차단되었습니다! touch the grass!", "igBlocked": "인스타그램은 차단되었습니다! touch the grass!", "timerEnded": "사용 시간이 종료되었습니다!" },
+    "ja": { "focus": "集中する時間です！", "restrict": "touch the grass!", "countdown": "あと{n}秒", "ytBlocked": "YouTubeはブロックされています！", "igBlocked": "Instagramはブロックされています！", "timerEnded": "使用時間が終了しました！" },
+    "zh_CN": { "focus": "现在是专注时间！", "restrict": "touch the grass!", "countdown": "{n} 秒后将屏蔽屏幕", "ytBlocked": "YouTube 已被屏蔽！", "igBlocked": "Instagram 已被屏蔽！", "timerEnded": "使用时间已结束！" },
+    "hi": { "focus": "यह फोकस समय है!", "restrict": "touch the grass!", "countdown": "{n} सेकंड शेष", "ytBlocked": "YouTube ब्लॉक है!", "igBlocked": "Instagram ब्लॉक है!", "timerEnded": "समय समाप्त!" }
 };
+
+
 
 function getI18n(key) {
     const lang = navigator.language.split('-')[0];
@@ -44,6 +52,20 @@ function getReminderMessage() {
 
 let reminderTimer = null;
 let lastReminderTime = Date.now();
+let usageLimitTimer = null;
+
+// Persist session start time across page reloads using localStorage
+function getSessionStartTime() {
+    const stored = localStorage.getItem('ns_session_start');
+    if (stored) {
+        return parseInt(stored, 10);
+    }
+    const now = Date.now();
+    localStorage.setItem('ns_session_start', now.toString());
+    return now;
+}
+const sessionStartTime = getSessionStartTime();
+
 
 const quotes = [
     "The future depends on what we do in the present.",
@@ -153,7 +175,203 @@ function applyConfig() {
 
     processExistingContent();
     setupReminder();
+    setupUsageLimit();
+    updateBlockingState();
+
 }
+
+// Consolidated Blocking Logic
+function updateBlockingState() {
+    const isYt = window.location.hostname.includes('youtube.com');
+    const isIg = window.location.hostname.includes('instagram.com');
+
+    let blockReason = null;
+    let blockMessageKey = '';
+
+    // 1. Immediate Block
+    if ((isYt && config.yt_block_now) || (isIg && config.ig_block_now)) {
+        blockReason = 'immediate';
+        blockMessageKey = isYt ? 'ytBlocked' : 'igBlocked';
+    }
+
+    // 2. Schedule Block (Hard Block)
+    if (!blockReason && config.yt_hard_block_enabled) {
+        if ((isYt && config.block_yt) || (isIg && config.block_ig)) {
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            const [startH, startM] = config.yt_hard_block_start.split(':').map(Number);
+            const [endH, endM] = config.yt_hard_block_end.split(':').map(Number);
+            const startTime = startH * 60 + startM;
+            const endTime = endH * 60 + endM;
+
+            let isBlocked = false;
+            if (startTime < endTime) {
+                isBlocked = currentTime >= startTime && currentTime < endTime;
+            } else {
+                isBlocked = currentTime >= startTime || currentTime < endTime;
+            }
+
+            if (isBlocked) {
+                blockReason = 'schedule';
+                // For schedule block, we pass the time directly to the overlay, not a key
+            }
+        }
+    }
+
+    // 3. Usage Limit Block
+    if (!blockReason && config.usage_limit_enabled) {
+        const now = Date.now();
+        const elapsedSeconds = (now - sessionStartTime) / 1000;
+        const limitSeconds = config.usage_limit_minutes * 60;
+
+        if (elapsedSeconds >= limitSeconds) {
+            // If timer ends, we only block if block_after_timer is true OR if we consider usage limit a hard stop
+            // Based on previous logic: 
+            // If block_after_timer is TRUE -> Block with "Time's up"
+            // If block_after_timer is FALSE -> Show "Time's up" overlay but maybe allow dismissal? 
+            // The previous code showed hard block overlay in BOTH cases.
+            // So we will treat it as a block.
+            blockReason = 'limit';
+            blockMessageKey = 'timerEnded';
+        }
+    }
+
+    // Apply Blocking or Unblocking
+    const overlayId = 'ns-hard-block-overlay';
+    const existingOverlay = document.getElementById(overlayId);
+
+    if (blockReason) {
+        if (!existingOverlay) {
+            let message = '';
+            if (blockReason === 'schedule') {
+                // Special handling for schedule message
+                const endTime = config.yt_hard_block_end;
+                showHardBlockOverlay(endTime, true); // true indicates it's a schedule time
+            } else {
+                showHardBlockOverlay(getI18n(blockMessageKey));
+            }
+        }
+    } else {
+        // If no reason to block, remove overlay if it exists
+        if (existingOverlay) {
+            existingOverlay.remove();
+        }
+        // Always ensure we clean up the lock and interval if not blocked
+        document.documentElement.style.overflow = '';
+        if (window.hardBlockInterval) clearInterval(window.hardBlockInterval);
+    }
+}
+
+
+// Logic loop for blocking status
+setInterval(updateBlockingState, 1000);
+
+// Timer for usage limit countdown display (separate from blocking logic)
+function setupUsageLimit() {
+    if (usageLimitTimer) clearInterval(usageLimitTimer);
+    if (!config.usage_limit_enabled) return;
+
+    usageLimitTimer = setInterval(() => {
+        const now = Date.now();
+        const elapsedSeconds = (now - sessionStartTime) / 1000;
+        const limitSeconds = config.usage_limit_minutes * 60;
+        const remainingSeconds = Math.max(0, Math.floor(limitSeconds - elapsedSeconds));
+
+        // Just handle countdown display here
+        if (remainingSeconds > 0 && remainingSeconds <= 60) {
+            if (remainingSeconds <= 10) showStrongCountdown(remainingSeconds);
+            else showCountdownOverlay(remainingSeconds);
+        } else {
+            // Remove countdowns if time is up (blocking logic handles the rest) or not yet close
+            const small = document.getElementById('ns-usage-countdown');
+            if (small) small.remove();
+            const strong = document.getElementById('ns-strong-countdown');
+            if (strong) strong.remove();
+        }
+    }, 1000);
+}
+
+
+function showStrongCountdown(seconds) {
+    // Remove smaller one if exists
+    const small = document.getElementById('ns-usage-countdown');
+    if (small) small.remove();
+
+    let overlay = document.getElementById('ns-strong-countdown');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'ns-strong-countdown';
+        overlay.style = `
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px); border-radius: 40px;
+            padding: 40px 60px; border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            z-index: 2147483646; text-align: center;
+            font-family: 'Inter', -apple-system, sans-serif;
+            animation: ns-pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        `;
+        overlay.innerHTML = `
+            <div style="font-size: 80px; margin-bottom: 20px;">⌛</div>
+            <div id="ns-strong-timer" style="font-size: 120px; font-weight: 900; color: #ff3b30; line-height: 1;">10</div>
+            <div style="font-size: 24px; font-weight: 600; color: #333; margin-top: 15px; opacity: 0.8;">Touch the Grass!</div>
+        `;
+        document.body.appendChild(overlay);
+
+        // Add style for animation if not present
+        if (!document.getElementById('ns-styles-extra')) {
+            const style = document.createElement('style');
+            style.id = 'ns-styles-extra';
+            style.textContent = `
+                @keyframes ns-pop-in {
+                    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                }
+                @keyframes ns-pulse-fast {
+                    0% { transform: translate(-50%, -50%) scale(1); }
+                    50% { transform: translate(-50%, -50%) scale(1.1); }
+                    100% { transform: translate(-50%, -50%) scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    const timerText = document.getElementById('ns-strong-timer');
+    if (timerText) {
+        timerText.textContent = seconds;
+        overlay.style.animation = 'ns-pulse-fast 0.5s ease-in-out infinite';
+    }
+}
+
+
+function showCountdownOverlay(seconds) {
+    let overlay = document.getElementById('ns-usage-countdown');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'ns-usage-countdown';
+        overlay.style = `
+            position: fixed; bottom: 20px; right: 20px;
+            background: rgba(0, 0, 0, 0.8); color: #fff;
+            padding: 10px 20px; border-radius: 12px;
+            font-family: 'Inter', sans-serif; font-size: 16px;
+            z-index: 9999999; pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1);
+        `;
+        document.body.appendChild(overlay);
+    }
+    const text = (getI18n('countdown') || "{n}s remaining").replace("{n}", seconds);
+    overlay.textContent = "⌛ " + text;
+
+    // Pulse effect when below 10s
+    if (seconds <= 10) {
+        overlay.style.background = "rgba(255, 0, 0, 0.8)";
+        overlay.style.transform = "scale(1.1)";
+    }
+}
+
 
 function setupReminder() {
     if (reminderTimer) clearInterval(reminderTimer);
@@ -408,41 +626,8 @@ function runYouTubeLogic() {
     observer.observe(document.documentElement, { childList: true, subtree: true });
 }
 
-function checkHardBlock() {
-    if (!config.yt_hard_block_enabled) return;
 
-    const hostname = window.location.hostname;
-    const isYt = hostname.includes('youtube.com');
-    const isIg = hostname.includes('instagram.com');
-
-    // Only proceed if the toggle for the current site is enabled
-    if (isYt && !config.block_yt) return;
-    if (isIg && !config.block_ig) return;
-
-    const now = new Date();
-    const currentTime = now.getHours() * 60 + now.getMinutes();
-
-    const [startH, startM] = config.yt_hard_block_start.split(':').map(Number);
-    const [endH, endM] = config.yt_hard_block_end.split(':').map(Number);
-
-    const startTime = startH * 60 + startM;
-    const endTime = endH * 60 + endM;
-
-    let isBlocked = false;
-    if (startTime < endTime) {
-        // Normal range (e.g., 09:00 to 18:00)
-        isBlocked = currentTime >= startTime && currentTime < endTime;
-    } else {
-        // Overnight range (e.g., 22:00 to 06:00)
-        isBlocked = currentTime >= startTime || currentTime < endTime;
-    }
-
-    if (isBlocked) {
-        showHardBlockOverlay(config.yt_hard_block_end);
-    }
-}
-
-function showHardBlockOverlay(endTime) {
+function showHardBlockOverlay(messageOrEndTime, isSchedule = false) {
     if (document.getElementById('ns-hard-block-overlay')) return;
 
     // Stop YouTube video if playing
@@ -453,19 +638,23 @@ function showHardBlockOverlay(endTime) {
         video.load();
     }
 
+    const isDark = config.darkMode;
+
     const overlay = document.createElement('div');
     overlay.id = 'ns-hard-block-overlay';
     overlay.style = `
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: ${isDark ? 'linear-gradient(135deg, #121212 0%, #2c2c2c 100%)' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'};
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         z-index: 2147483647; font-family: 'Inter', -apple-system, sans-serif;
     `;
 
     const card = document.createElement('div');
     card.style = `
-        background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(30px);
-        padding: 50px 70px; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.4);
+        background: ${isDark ? 'rgba(30, 30, 30, 0.7)' : 'rgba(255, 255, 255, 0.7)'}; 
+        backdrop-filter: blur(30px);
+        padding: 50px 70px; border-radius: 32px; 
+        border: 1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.4)'};
         box-shadow: 0 25px 50px rgba(0,0,0,0.1); text-align: center;
     `;
 
@@ -478,13 +667,19 @@ function showHardBlockOverlay(endTime) {
     title.textContent = getI18n('focus');
     title.style.fontSize = "32px";
     title.style.fontWeight = "800";
-    title.style.color = "#222";
+    title.style.color = isDark ? "#fff" : "#222";
     title.style.marginBottom = "10px";
 
     const sub = document.createElement('div');
-    sub.textContent = getI18n('restrict').replace("{time}", endTime);
+
+    if (isSchedule) {
+        sub.textContent = getI18n('restrict').replace("{time}", messageOrEndTime);
+    } else {
+        sub.textContent = messageOrEndTime;
+    }
+
     sub.style.fontSize = "18px";
-    sub.style.color = "#666";
+    sub.style.color = isDark ? "#ccc" : "#666";
 
     card.appendChild(icon);
     card.appendChild(title);
@@ -495,12 +690,16 @@ function showHardBlockOverlay(endTime) {
     document.documentElement.style.overflow = 'hidden';
 
     // Repeatedly check and ensure overlay stays
-    setInterval(() => {
+    // Clear any existing interval to prevent duplicates if function called repeatedly (though guard prevents it)
+    if (window.hardBlockInterval) clearInterval(window.hardBlockInterval);
+
+    window.hardBlockInterval = setInterval(() => {
         if (!document.getElementById('ns-hard-block-overlay')) {
             document.documentElement.appendChild(overlay);
         }
         document.documentElement.style.overflow = 'hidden';
     }, 1000);
 }
+
 
 loadConfig();
