@@ -3,6 +3,7 @@ import 'script_injector.dart';
 
 class WebviewManager {
   InAppWebViewController? _controller;
+  InAppWebViewController? get controller => _controller;
 
   void setController(InAppWebViewController controller) {
     _controller = controller;
