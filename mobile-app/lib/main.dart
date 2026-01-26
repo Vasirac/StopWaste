@@ -57,11 +57,11 @@ class _DmScreenState extends State<DmScreen> {
               javaScriptEnabled: true,
               domStorageEnabled: true,
               databaseEnabled: true,
-              mixedContentMode: MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+              mixedContentMode: MixedContentMode.MIXED_CONTENT_NEVER_ALLOW,
               userAgent:
                   "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
-              allowFileAccessFromFileURLs: true,
-              allowUniversalAccessFromFileURLs: true,
+              allowFileAccessFromFileURLs: false,
+              allowUniversalAccessFromFileURLs: false,
               useHybridComposition: true,
               useShouldOverrideUrlLoading: true, // URL 로딩 가로채기 활성화
             ),
@@ -118,6 +118,7 @@ class _DmScreenState extends State<DmScreen> {
               await _webviewManager.injectDmOnlyLogic();
             },
             onConsoleMessage: (controller, consoleMessage) {
+              // Note: In production, consider filtering or disabling console logs
               debugPrint("JS CONSOLE: ${consoleMessage.message}");
             },
             onLoadError: (controller, url, code, message) {

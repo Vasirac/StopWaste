@@ -312,11 +312,18 @@ class DmLogic {
           console.log('[DM-Only] Logout button INJECTED into login modal');
         }
 
-        if (window.dmRedirectInterval) clearInterval(window.dmRedirectInterval);
-        window.dmRedirectInterval = setInterval(function() {
+        const observer = new MutationObserver(function(mutations) {
           checkAndApply();
           injectLogoutButton();
-        }, $intervalMs);
+        });
+
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+          attributes: false
+        });
+
+        // 초기 실행
         checkAndApply();
         injectLogoutButton();
       })();
