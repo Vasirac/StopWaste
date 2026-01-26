@@ -1,75 +1,25 @@
-# 🚫 StopWaste
+# StopWaste - SNS Focus Browser
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Platform-Chrome%20%7C%20Edge-blue?style=for-the-badge&logo=google-chrome" alt="Platform">
-  <img src="https://img.shields.io/badge/Language-English%20%7C%20한국어%20%7C%20日本語%20%7C%20中文%20%7C%20हिन्दी-green?style=for-the-badge" alt="Languages">
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
-</p>
+## 🚀 프로젝트 소개
+StopWaste는 SNS 중독의 핵심인 '숏폼(Reels, Shorts 등)' 요소를 차단하고, 본래의 목적인 **소통(DM)**에만 집중할 수 있게 도와주는 디지털 웰빙 브라우저입니다.
 
----
+## ✨ 주요 기능
+- **DM 전용 모드**: 인스타그램 접속 시 자동으로 DM 인박스로 이동하며, 홈/탐색 등의 페이지 접근을 차단합니다.
+- **릴스 스와이프 차단**: DM에서 공유받은 릴스는 시청 가능하지만, 아래로 스와이프하여 다른 릴스로 넘어가는 것을 물리적으로 차단합니다.
+- **간편 로그아웃**: 로그인 모달 내에 커스텀 로그아웃 버튼을 주입하여 계정 전환 및 로그아웃을 편리하게 지원합니다.
+- **깔끔한 UI**: 불필요한 새로고침 버튼 등을 제거하여 집중력을 높였습니다.
 
-### 🚀 Stop doom-scrolling and start living!
-**StopWaste** is a powerful browser extension designed to help you regain focus by removing addictive elements from Instagram and YouTube. 
+## ⚠️ 주의사항 (Legal Notice)
+- 이 프로젝트는 **교육 및 실험적 목적**을 위한 개인 프로젝트입니다.
+- **Meta(Instagram)와 어떠한 상업적/공식적 관계도 없으며**, 해당 서비스의 로고 및 상표권은 Meta에 있습니다.
+- 인스타그램의 서비스 약관(ToS)에 따라 계정 사용에 제한이 있을 수 있으니 사용 시 주의 부탁드립니다.
+- 본 소프트웨어는 "있는 그대로" 제공되며, 사용으로 인한 책임은 사용자 본인에게 있습니다.
 
-### 🚀 무의식적인 스크롤을 멈추고 더 중요한 일에 집중하세요!
-**StopWaste**는 인스타그램과 유튜브의 중독적인 요소들을 제거하여 생산성을 극대화해주는 브라우저 확장 프로그램입니다.
+## 🛠 기술 스택
+- **Flutter**: 크로스 플랫폼 앱 프레임워크
+- **InAppWebView**: 강력한 웹 콘텐츠 제어 및 JS 주입
 
----
-
-## ✨ Key Features / 주요 기능
-
-> [!NOTE]
-> The extension automatically detects your browser's language setting.
-> (본 확장 프로그램은 브라우저의 언어 설정을 자동으로 감지합니다.)
-
-### 📸 Instagram Focus
-| Feature | Description | 한국어 설명 |
-| :--- | :--- | :--- |
-| **Smart Redirect** | Auto-redirects from Reels/Explore to DMs or safe pages. | 릴스/탐색 탭 접속 시 메시지함 등으로 자동 이동 |
-| **Clean Feed** | Hides distracting videos and photos from your feed. | 피드의 사진과 영상을 숨겨 무한 스크롤 방지 |
-| **Minimal UI** | Hide Sidebar, Recommendations, Stories, and Tabs. | 사이드바, 추천 친구, 스토리 바 등 UI 제거 |
-| **Grayscale Mode** | Turns the site black & white to reduce dopamine. | 사이트 전체 흑백 모드로 시각적 자극 감소 |
-| **Quote Injection** | Replaces addictive content with motivational quotes. | 중독적 콘텐츠 대신 동기부여 명언 표시 |
-
-### 📺 YouTube Focus
-- **🚫 Block Shorts:** Completely hides YouTube Shorts to prevent addiction. (쇼츠 영상 완전 차단)
-- **🏠 Minimal Home:** Hides all recommendations, leaving only the search bar. (홈 화면의 알고리즘 추천 제거)
-- **🧘 Distraction Free:** Hides sidebar, comments, and related videos. (사이드바, 댓글, 관련 영상 숨김)
-- **⏸️ Stop Auto-Play:** Forces the "Auto-play" toggle to OFF. (자동 재생 기능 강제 비활성화)
-
----
-
-## 🛠 Installation / 설치 방법
-
-1. **Download:** Clone or download this repository to your local machine.
-   - `git clone https://github.com/your-username/noshort-multi.git`
-2. **Extensions Page:** Open your browser and navigate to `chrome://extensions`.
-   - (브라우저 주소창에 `chrome://extensions` 입력)
-3. **Developer Mode:** Enable **"Developer mode"** in the top right corner.
-   - (우측 상단의 **'개발자 모드'** 활성화)
-4. **Load Extension:** Click **"Load unpacked"** and select the extension folder.
-   - (**'압축해제된 확장 프로그램을 로드합니다'** 버튼을 누르고 폴더 선택)
-
----
-
-## 📱 Mobile App (Flutter)
-Available for Android (and iOS in the future).
-
-### 🛠 How to Run / 빌드 및 실행 방법
-1. **Prerequisites:** Flutter SDK installed.
-2. **Setup:** `flutter pub get`
-3. **Run YouTube Flavor:**
-   ```bash
-   flutter run --flavor youtube
-   ```
-4. **Run Instagram Flavor:**
-   ```bash
-   flutter run --flavor instagram
-   ```
-
----
-
-## 📝 License
-This project is open-source and available for personal modification.
-이 프로젝트는 오픈 소스이며 자유롭게 수정하여 사용할 수 있습니다.
-
+## 📦 설치 및 실행
+1. Flutter SDK가 설치되어 있어야 합니다.
+2. `flutter pub get` 실행
+3. `flutter run --flavor instagram` 실행

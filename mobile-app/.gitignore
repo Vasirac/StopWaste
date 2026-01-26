@@ -1,0 +1,68 @@
+# Flutter-related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.server/
+build/
+
+# Android-related
+**/android/**/generated/
+**/android/gen/
+**/android/bin/
+**/android/local.properties
+**/android/key.properties
+**/android/skylark-out/
+**/android/.gradle/
+**/android/app/build/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+
+# iOS-related
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/App.framework
+**/ios/Flutter/App.podspec
+**/ios/Runner/GeneratedPluginRegistrant.[mh]
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/DerivedData/
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+**/.LSOverride
+
+# Symbolication related
+app.*.symbols
+
+# Executable distributions
+*.apk
+*.aab
+*.exe
+*.zip
+*.tar.gz
+*.rar
+
+# macOS-related
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+
+# IDE-related
+.idea/
+.vscode/
+*.iml
+*.iws
+*.swp
+*.swo
+
+# Project specific
+*.log
+.claude/
+.gemini/
